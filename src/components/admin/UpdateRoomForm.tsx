@@ -1,28 +1,68 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent, useRef } from "react";
-import { useCreateRoomMutation } from "@/redux/services/roomApi";
-import { RoomData } from "@/interfaces/roomsInterface";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  useUpdateRoomMutation,
+  useGetRoomByIdQuery,
+  useDeleteRoomMutation,
+} from "@/redux/services/roomApi";
+import { RoomDataToUpdate } from "@/interfaces/roomsInterface";
 import { AvailabilityStatus, RoomType } from "@/enums/roomEnums";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { RxCross2 } from "react-icons/rx";
 import { Toaster, toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
-const CreateRoomForm: React.FC = () => {
-  // Define a ref to reference the form element
-  const formRef = useRef<HTMLFormElement>(null);
+const UpdateRoomForm: React.FC = () => {
+  const params = useParams<{ id: string }>();
+  const roomId = params.id;
 
   const router = useRouter();
 
-  const [roomData, setRoomData] = useState<RoomData>({
+  const {
+    data: initialRoomData,
+    error: fetchError,
+    isLoading: isFetching,
+  } = useGetRoomByIdQuery(roomId);
+
+  const [roomData, setRoomData] = useState<RoomDataToUpdate>({
     roomNumber: "",
-    roomType: RoomType.SINGLE, // provide a default value for RoomType
-    pricePerNight: 0, // provide a default value for pricePerNight
-    capacity: 0, // provide a default value for capacity
-    roomSize: 0, // provide a default value for roomSize
-    availabilityStatus: AvailabilityStatus.AVAILABLE, // provide a default value for availabilityStatus
-    description: "", // initialize as an empty string since it's optional
-    images: null, // initialize as null since it's optional
+    roomType: RoomType.SINGLE,
+    pricePerNight: 0,
+    capacity: 0,
+    roomSize: 0,
+    availabilityStatus: AvailabilityStatus.AVAILABLE,
+    description: "",
+    imageUrls: [],
+    images: null,
   });
-  const [createRoom, { isLoading, isError, error }] = useCreateRoomMutation();
+
+  const [imageIndicesToDelete, setImageIndicesToDelete] = useState<number[]>(
+    []
+  );
+
+  const [
+    updateRoom,
+    {
+      isLoading: isUpdating,
+      isError: updateError,
+      error: updateErrorDetails,
+      data: updatedData,
+    },
+  ] = useUpdateRoomMutation();
+
+  const [deleteRoom, { isLoading: isDeleting, isError: deleteError }] =
+    useDeleteRoomMutation();
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (initialRoomData) {
+      setRoomData({
+        ...initialRoomData,
+        imageUrls: initialRoomData.imageUrls || [],
+      });
+    }
+  }, [initialRoomData]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -38,10 +78,36 @@ const CreateRoomForm: React.FC = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
+      const newImageUrls = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
       setRoomData({
         ...roomData,
         images: files,
+        imageUrls: newImageUrls, // Set imageUrls to the new array directly
       });
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const updatedImageUrls = [...roomData.imageUrls];
+    updatedImageUrls.splice(index, 1); // Remove image from state
+    setRoomData({ ...roomData, imageUrls: updatedImageUrls });
+    setImageIndicesToDelete((prevIndices) => [...prevIndices, index]); // Track the index of the image to delete
+  };
+
+  const handleDeleteRoom = async () => {
+    try {
+      await deleteRoom(roomId).unwrap();
+      console.log("Room deleted successfully");
+      // Redirect or handle success
+      toast.success("Room deleted successfully!", {
+        duration: 3000,
+      });
+      router.push("/admin/room/rooms");
+      router.refresh();
+    } catch (err) {
+      console.error("Error deleting room:", err);
     }
   };
 
@@ -49,64 +115,66 @@ const CreateRoomForm: React.FC = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
+
+      const excludedFields = ["id", "imageUrls", "createdAt", "updatedAt"];
+
       Object.entries(roomData).forEach(([key, value]) => {
+        if (excludedFields.includes(key)) return;
         if (value instanceof FileList) {
-          // Append each file to the formData with the key 'images'
-          Array.from(value).forEach((file, index) => {
-            formData.append(`images`, file);
+          Array.from(value).forEach((file) => {
+            formData.append("images", file);
           });
         } else {
           formData.append(key, value as string);
         }
       });
 
-      //!!!! to fix later
-      // @ts-ignore
-      const createdRoom = await createRoom(formData).unwrap();
-      console.log("Room created:", createdRoom);
-      // Reset the form after successful room creation
-      setRoomData({
-        roomNumber: "",
-        roomType: RoomType.SINGLE,
-        pricePerNight: 0,
-        capacity: 0,
-        roomSize: 0,
-        availabilityStatus: AvailabilityStatus.AVAILABLE,
-        description: "",
-        images: null,
-      });
+      if (imageIndicesToDelete.length > 0) {
+        // Append each index as a separate form data entry
+        imageIndicesToDelete.forEach((index) => {
+          formData.append("imageIndicesToDelete[]", index.toString());
+        });
+      }
 
-      formRef.current?.reset(); // Reset the form
+      await updateRoom({ id: roomId, roomData: formData }).unwrap();
+      console.log("Room updated successfully");
 
-      toast.success("Room created successfully!", {
+      // Update imageUrls state to remove deleted images
+      const updatedImageUrls = roomData.imageUrls.filter(
+        (_, index) => !imageIndicesToDelete.includes(index)
+      );
+      setRoomData((prevState) => ({
+        ...prevState,
+        imageUrls: updatedImageUrls,
+      }));
+
+      // window.location.reload(); // Refreshing the page might not be the best approach
+      toast.success("Room updated successfully!", {
         duration: 3000,
       });
       router.push("/admin/room/rooms");
       router.refresh();
     } catch (err) {
-      console.error("Error creating room:", err);
-      // Handle error
+      console.error("Error updating room:", err);
     }
   };
 
-  const getErrorMessage = (error: any) => {
-    if (error?.data?.message) {
-      return error.data.message;
-    } else if (error?.data?.error) {
-      return error.data.error;
-    } else {
-      return "An unknown error occurred";
-    }
-  };
+  if (isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  if (fetchError) {
+    const errorMessage =
+      "status" in fetchError
+        ? `Error: ${fetchError.status} - ${JSON.stringify(fetchError.data)}`
+        : fetchError.message;
+
+    return <div>Error fetching room data: {errorMessage}</div>;
+  }
 
   return (
     <div className="mx-4 px-3 md:px-6 md:max-w-md md:mx-auto p-6 bg-gray-200 rounded-md shadow-md w-80 lg:w-96">
       <form onSubmit={handleSubmit} ref={formRef}>
-        {isError && (
-          <div className="text-red-600">
-            {getErrorMessage(error).replace(/^Error:\s*/, "")}
-          </div>
-        )}
         <div className="mb-4">
           <label
             htmlFor="roomNumber"
@@ -139,7 +207,6 @@ const CreateRoomForm: React.FC = () => {
             className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
           >
-            <option value="">Select Room Type</option>
             <option value="SINGLE">Single</option>
             <option value="DOUBLE">Double</option>
             <option value="SUITE">Suite</option>
@@ -226,35 +293,65 @@ const CreateRoomForm: React.FC = () => {
             className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
           >
-            <option value="">Select Availability Status</option>
             <option value="AVAILABLE">Available</option>
             <option value="OCCUPIED">Occupied</option>
           </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Current Images
+          </label>
+          <div className="flex flex-wrap">
+            {roomData.imageUrls.map((url, index) => (
+              <div key={index} className="relative w-24 h-24 m-1">
+                <Image
+                  src={url}
+                  alt={`Room image ${index + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded"
+                >
+                  <RxCross2 />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="mb-4">
           <label
             htmlFor="images"
             className="block text-sm font-medium text-gray-700"
           >
-            Upload Images
+            Add Images
           </label>
           <input
             type="file"
             id="images"
             name="images"
-            onChange={handleImageChange}
+            accept="image/*"
             multiple
+            onChange={handleImageChange}
             className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            required
           />
         </div>
-        <div className="mt-4">
+        <div className="flex items-center justify-between space-x-2">
           <button
             type="submit"
-            disabled={isLoading}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
           >
-            {isLoading ? "Creating..." : "Create Room"}
+            {isUpdating ? "Updating..." : "Update Room"}
+          </button>
+          <button
+            type="button"
+            onClick={handleDeleteRoom}
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+          >
+            {isDeleting ? "Deleting..." : "Delete Room"}
           </button>
         </div>
       </form>
@@ -263,4 +360,4 @@ const CreateRoomForm: React.FC = () => {
   );
 };
 
-export default CreateRoomForm;
+export default UpdateRoomForm;
