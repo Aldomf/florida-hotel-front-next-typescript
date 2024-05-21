@@ -6,6 +6,10 @@ const nextConfig = {
           protocol: "https", // Cloudinary uses HTTPS protocol
           hostname: "res.cloudinary.com", // Cloudinary hostname
         },
+        {
+          protocol: "https",
+          hostname: "via.placeholder.com",
+        },
       ],
     },
   };

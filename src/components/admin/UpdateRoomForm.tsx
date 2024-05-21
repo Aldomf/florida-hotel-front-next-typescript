@@ -22,6 +22,7 @@ const UpdateRoomForm: React.FC = () => {
     data: initialRoomData,
     error: fetchError,
     isLoading: isFetching,
+    refetch,
   } = useGetRoomByIdQuery(roomId);
 
   const [roomData, setRoomData] = useState<RoomDataToUpdate>({
@@ -63,6 +64,11 @@ const UpdateRoomForm: React.FC = () => {
       });
     }
   }, [initialRoomData]);
+
+  // Use useEffect to refetch data on component mount
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -302,24 +308,32 @@ const UpdateRoomForm: React.FC = () => {
             Current Images
           </label>
           <div className="flex flex-wrap">
-            {roomData.imageUrls.map((url, index) => (
-              <div key={index} className="relative w-24 h-24 m-1">
-                <Image
-                  src={url}
-                  alt={`Room image ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded"
-                >
-                  <RxCross2 />
-                </button>
+            {roomData.imageUrls.length > 0 ? (
+              roomData.imageUrls.map((url, index) => (
+                <div key={index} className="relative w-24 h-24 m-1">
+                  <Image
+                    src={url}
+                    alt={`Room image ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded"
+                  >
+                    <RxCross2 />
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div className="w-full text-center py-4">
+                <p className="text-gray-500">
+                  No images available for this room.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
         <div className="mb-4">

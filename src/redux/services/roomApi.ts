@@ -20,6 +20,9 @@ export const roomApi = createApi({
     }),
     getRoomById: builder.query<RoomDataToUpdate, string>({
       query: (id) => `rooms/${id}`,
+      extraOptions: {
+        refetchOnMountOrArgChange: true,
+      },
     }),
     updateRoom: builder.mutation<void, { id: string, roomData: FormData }>({
       query: ({ id, roomData }) => ({
