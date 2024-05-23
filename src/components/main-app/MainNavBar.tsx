@@ -6,7 +6,7 @@ import { FaUmbrellaBeach } from "react-icons/fa";
 const Navbar: React.FC = () => {
   return (
     <div className="sticky top-0 z-20">
-      <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <nav className="bg-white border-gray-200">
         <div className="flex flex-wrap justify-between items-center px-4 md:px-20 lg:px-40 xl:px-60">
           <div className="hidden ss:flex ss:items-center">
             <FaUmbrellaBeach className="mr-2 text-[#9D8000]" />
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
-      <nav className="bg-[#C2B266] dark:bg-gray-700">
+      <nav className="bg-[#C2B266]">
         <div className="max-w-screen-xl px-4 py-3 mx-auto flex justify-center">
           <div className="flex items-center">
             <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm md:text-xl">
