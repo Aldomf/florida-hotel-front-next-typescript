@@ -27,9 +27,9 @@ const Navbar: React.FC = () => {
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <Link
               href="#"
-              className="bg-[#9D8000] hover:bg-[#C2B266] text-white p-2 md:px-6 rounded-lg"
+              className="bg-[#9D8000] hover:bg-[#C2B266] text-sm mm:text-base text-white p-2 md:px-6 rounded-lg"
             >
-              Reserve
+              BOOK NOW
             </Link>
           </div>
         </div>
