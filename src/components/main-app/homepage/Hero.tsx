@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
         />
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-          <h1 className="text-white text-4xl md:text-6xl font-semibold italic">Welcome to Paradise</h1>
+          <h1 className="text-white text-4xl md:text-6xl font-semibold italic text-center">Welcome to Paradise</h1>
         </div>
       </div>
     </div>
