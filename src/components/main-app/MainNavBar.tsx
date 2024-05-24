@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
                   className="text-white hover:text-black transition-all duration-500 ease-in-out"
                   aria-current="page"
                 >
-                  Home
+                  Rooms
                 </Link>
               </li>
               <li>
@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
                   href="#"
                   className="text-white hover:text-black transition-all duration-500 ease-in-out"
                 >
-                  Features
+                  Gallery
                 </Link>
               </li>
             </ul>

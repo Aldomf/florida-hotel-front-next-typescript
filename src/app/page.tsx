@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { decrement, increment } from '@/redux/features/room/roomSlice'
 import MainNavbar from '@/components/main-app/MainNavBar'
 import Hero from '@/components/main-app/homepage/Hero'
+import RoomSection from '@/components/main-app/homepage/RoomSection'
 
 export default function Counter() {
   const count = useAppSelector(state => state.counterReducer.value)
@@ -14,7 +15,8 @@ export default function Counter() {
     <div>
       <MainNavbar/>
       <Hero/>
-      <div className=''>
+      <RoomSection/>
+      <div className='h-[1000px]'>
         <button
           aria-label="Increment value"
           onClick={() => dispatch(increment())}
