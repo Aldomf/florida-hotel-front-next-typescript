@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { GetRoomData } from "@/interfaces/roomsInterface";
 import { AvailabilityStatus, RoomType } from "@/enums/roomEnums";
+import { FaWifi } from "react-icons/fa6";
+import { BiHandicap } from "react-icons/bi";
+import { CgScreen } from "react-icons/cg";
+import { RiSafeLine } from "react-icons/ri";
+import { GiMeal } from "react-icons/gi";
 
 interface RoomCardProps {
   rooms: GetRoomData[];
@@ -12,10 +17,25 @@ interface RoomCardProps {
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
+  const [hoveredImageIndex, setHoveredImageIndex] = useState<number | null>(
+    null
+  );
+  const [hoveredRoomIndex, setHoveredRoomIndex] = useState<number | null>(null);
+
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
+  };
+
+  const handleMouseEnter = (roomIndex: number, imageIndex: number) => {
+    setHoveredRoomIndex(roomIndex);
+    setHoveredImageIndex(imageIndex);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRoomIndex(null);
+    setHoveredImageIndex(null);
   };
 
   const CustomButtonGroup: React.FC<any> = ({ next, previous }) => (
@@ -29,57 +49,47 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
     </div>
   );
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    // Handle the error
+    console.error("Error fetching rooms:", error);
+    return <div>Error fetching rooms. Please try again later.</div>;
+  }
+
   return (
     <div className="flex flex-col justify-center items-center mm:flex-row mm:flex-wrap mm:space-x-6 mt-10">
-      {rooms?.map((room, index) => (
+      {rooms?.map((room, roomIndex) => (
         <div
-          key={index}
+          key={roomIndex}
           className="max-w-[300px] md:max-w-[450px] bg-white border border-gray-200 rounded-lg shadow mb-4 xl:mb-0"
         >
           <div className="relative h-44 md:h-72 overflow-hidden rounded-t-lg">
             {room.imageUrls && room.imageUrls.length > 0 ? (
-              <Carousel
-                additionalTransfrom={0}
-                customButtonGroup={<CustomButtonGroup />}
-                arrows={false}
-                centerMode={false}
-                containerClass="carousel-container"
-                draggable
-                infinite
-                keyBoardControl
-                minimumTouchDrag={80}
-                responsive={{
-                  desktop: {
-                    breakpoint: { max: 3000, min: 1024 },
-                    items: 1,
-                    partialVisibilityGutter: 40,
-                  },
-                  mobile: {
-                    breakpoint: { max: 464, min: 0 },
-                    items: 1,
-                    partialVisibilityGutter: 30,
-                  },
-                  tablet: {
-                    breakpoint: { max: 1024, min: 464 },
-                    items: 1,
-                    partialVisibilityGutter: 30,
-                  },
-                }}
-                showDots={false}
-                slidesToSlide={1}
-                swipeable
+              <div
+                className="carousel-container"
+                onMouseEnter={() => handleMouseEnter(roomIndex, 0)}
+                onMouseLeave={handleMouseLeave}
               >
-                {room.imageUrls.map((image, index) => (
-                  <Image
-                    key={index}
-                    src={image}
-                    width={500}
-                    height={500}
-                    alt={`room-image-${index}`}
-                    className="object-cover w-full h-full"
-                  />
-                ))}
-              </Carousel>
+                <Image
+                  src={
+                    room.imageUrls[
+                      hoveredRoomIndex === roomIndex &&
+                      hoveredImageIndex !== null
+                        ? (hoveredImageIndex + 1) % room.imageUrls.length
+                        : 0
+                    ]
+                  }
+                  width={500}
+                  height={500}
+                  alt={`room-image-${
+                    hoveredRoomIndex === roomIndex ? hoveredImageIndex : 0
+                  }`}
+                  className="object-cover w-full h-full transition duration-500 ease-in-out transform hover:scale-110"
+                />
+              </div>
             ) : (
               <Image
                 src="https://via.placeholder.com/800x400?text=No+Image"
@@ -90,30 +100,25 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
               />
             )}
           </div>
-          <div className="p-5">
+          <div className="p-5 flex flex-col items-center">
+            <div className="flex justify-around w-[95%] mb-2">
+              <FaWifi className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+              <BiHandicap className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+              <CgScreen className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+              <RiSafeLine className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+              <GiMeal className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+            </div>
             <a href="#">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center">
                 Room {room.roomNumber} - {RoomType[room.roomType]}
               </h5>
             </a>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              {truncateText(room.description ?? "", 82)}
-            </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Price per Night: ${room.pricePerNight}
-            </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Capacity: {room.capacity} persons
-            </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Room Size: {room.roomSize} sq. ft.
-            </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Availability: {AvailabilityStatus[room.availabilityStatus]}
+            <p className="mb-3 font-normal text-center text-gray-700 dark:text-gray-400">
+            &quot;{room.roomSize}m² of comfort. Up to {room.capacity} persons&quot;
             </p>
             <a
               href="#"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#9D8000] rounded-lg hover:bg-[#C2B266] focus:ring-4 focus:outline-none focus:ring-blue-300"
             >
               Read more
               <svg
