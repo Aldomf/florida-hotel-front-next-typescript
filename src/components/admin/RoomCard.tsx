@@ -117,7 +117,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
               type="button"
               onClick={() => router.push(`/admin/room/${room.id}`)}
             >
-              Read More
+              Update
             </button>
           </div>
         </div>

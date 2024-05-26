@@ -9,6 +9,7 @@ import { BiHandicap } from "react-icons/bi";
 import { CgScreen } from "react-icons/cg";
 import { RiSafeLine } from "react-icons/ri";
 import { GiMeal } from "react-icons/gi";
+import Link from "next/link";
 
 interface RoomCardProps {
   rooms: GetRoomData[];
@@ -108,17 +109,17 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
               <RiSafeLine className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
               <GiMeal className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
             </div>
-            <a href="#">
+            <Link href={`/room/${room.id}`}>
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center">
                 Room {room.roomNumber} - {RoomType[room.roomType]}
               </h5>
-            </a>
+            </Link>
             <p className="mb-3 font-normal text-center text-gray-700 dark:text-gray-400">
             &quot;{room.roomSize}m² of comfort. Up to {room.capacity} persons&quot;
             </p>
-            <a
-              href="#"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#9D8000] rounded-lg hover:bg-[#C2B266] focus:ring-4 focus:outline-none focus:ring-blue-300"
+            <Link
+              href={`/room/${room.id}`}
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#9D8000] rounded-lg hover:bg-[#C2B266]"
             >
               Read more
               <svg
@@ -136,7 +137,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
                   d="M1 5h12m0 0L9 1m4 4L9 9"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       ))}
