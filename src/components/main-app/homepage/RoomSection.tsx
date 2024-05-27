@@ -11,9 +11,12 @@ function RoomSection() {
     refetch();
   }, [refetch]);
 
+  // Limit the rooms to the first three
+  const limitedRooms = rooms ? rooms.slice(3, 6) : [];
+
   return (
     <div>
-        <RoomCard rooms={rooms || []} error={error} isLoading={isLoading} />
+        <RoomCard rooms={limitedRooms || []} error={error} isLoading={isLoading} />
     </div>
   )
 }
