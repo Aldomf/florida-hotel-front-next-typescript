@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useGetRoomByIdQuery } from "@/redux/services/roomApi";
 import Carousel from "react-multi-carousel";
@@ -22,15 +22,17 @@ function OneRoom() {
     refetch,
   } = useGetRoomByIdQuery(roomId);
 
+  const [mainImage, setMainImage] = useState<string | null>(null);
+
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  if (!initialRoomData?.imageUrls || initialRoomData.imageUrls.length === 0) {
-    return null;
-  }
-
-  const [firstImage, ...restImages] = initialRoomData.imageUrls;
+  useEffect(() => {
+    if (initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 0) {
+      setMainImage(initialRoomData.imageUrls[0]);
+    }
+  }, [initialRoomData]);
 
   if (isFetching) {
     return <div>Loading...</div>;
@@ -74,15 +76,17 @@ function OneRoom() {
       <div className="lg:mx-40 xl:flex xl:mx-32">
         <div className="my-6 mx-3 xl:w-[60%]">
           <div className="main-image mb-5">
-            <Image
-              src={firstImage}
-              alt="Main Room Image"
-              width={500}
-              height={500}
-              className="w-full h-auto"
-            />
+            {mainImage && (
+              <Image
+                src={mainImage}
+                alt="Main Room Image"
+                width={500}
+                height={500}
+                className="w-full h-auto"
+              />
+            )}
           </div>
-          {restImages.length > 0 && (
+          {initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 1 && (
             <Carousel
               responsive={responsive}
               autoPlay={true}
@@ -92,14 +96,18 @@ function OneRoom() {
               showDots={true}
               itemClass="pr-1"
             >
-              {restImages.map((url, index) => (
-                <div key={index} className="carousel-image">
+              {initialRoomData.imageUrls.map((url, index) => (
+                <div
+                  key={index}
+                  className="carousel-image"
+                  onClick={() => setMainImage(url)}
+                >
                   <Image
                     src={url}
-                    alt={`Room Image ${index + 2}`}
+                    alt={`Room Image ${index + 1}`}
                     width={500}
                     height={500}
-                    className="w-36 ss:w-auto h-auto mx-auto"
+                    className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
                   />
                 </div>
               ))}

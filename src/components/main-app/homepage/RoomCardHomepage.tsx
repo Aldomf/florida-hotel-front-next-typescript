@@ -23,12 +23,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
   );
   const [hoveredRoomIndex, setHoveredRoomIndex] = useState<number | null>(null);
 
-  const truncateText = (text: string, maxLength: number) => {
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
-  };
-
   const handleMouseEnter = (roomIndex: number, imageIndex: number) => {
     setHoveredRoomIndex(roomIndex);
     setHoveredImageIndex(imageIndex);
@@ -38,17 +32,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
     setHoveredRoomIndex(null);
     setHoveredImageIndex(null);
   };
-
-  const CustomButtonGroup: React.FC<any> = ({ next, previous }) => (
-    <div className="custom-button-group">
-      <button className="prev" onClick={previous}>
-        Prev
-      </button>
-      <button className="next" onClick={next}>
-        Next
-      </button>
-    </div>
-  );
 
   if (isLoading) {
     return <div>Loading...</div>;

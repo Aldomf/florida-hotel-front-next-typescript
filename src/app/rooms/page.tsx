@@ -1,8 +1,10 @@
+"use client"
 import React, { useEffect } from "react";
-import RoomCard from "./RoomCardHomepage";
+import MainNavbar from "@/components/main-app/MainNavBar";
+import ManyRooms from "@/components/main-app/rooms/ManyRooms";
 import { useGetRoomsQuery } from "@/redux/services/roomApi";
 
-function RoomSection() {
+function Rooms() {
   // Fetch all rooms using the useGetRoomsQuery hook
   const { data: rooms, error, isLoading, refetch } = useGetRoomsQuery();
 
@@ -11,18 +13,15 @@ function RoomSection() {
     refetch();
   }, [refetch]);
 
-  // Limit the rooms to the first three
-  const limitedRooms = rooms ? rooms.slice(3, 6) : [];
-
   return (
     <div>
-      <RoomCard
-        rooms={limitedRooms || []}
+      <MainNavbar />
+      <h1 className="font-semibold text-3xl lg:text-5xl text-center my-8">Rooms</h1>
+      <ManyRooms rooms={rooms || []}
         error={error}
-        isLoading={isLoading}
-      />
+        isLoading={isLoading}/>
     </div>
   );
 }
 
-export default RoomSection;
+export default Rooms;

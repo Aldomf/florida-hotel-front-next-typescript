@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
             <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm md:text-xl">
               <li className="">
                 <Link
-                  href="#"
+                  href="/rooms"
                   className="text-white hover:text-black transition-all duration-500 ease-in-out"
                   aria-current="page"
                 >

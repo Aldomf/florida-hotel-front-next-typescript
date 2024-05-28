@@ -20,7 +20,7 @@ export interface GetRoomData {
   capacity: number;
   roomSize: number;
   availabilityStatus: AvailabilityStatus;
-  imageUrls: []
+  imageUrls: string[]
 }
 
 export interface GetRoomDataById {
