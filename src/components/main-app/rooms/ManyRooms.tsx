@@ -80,7 +80,7 @@ const ManyRooms: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
               )}
             </div>
           </div>
-          <div className="mt-4 text-center lg:w-1/2">
+          <div className="mt-4 text-center lg:w-1/2 lg:text-left lg:pl-8">
             <h1 className="text-2xl mb-4">{room.roomNumber}</h1>
             <div className="mb-4">
                 {room.roomSize} m² <span className="font-extralight ss:mx-2">|</span> Up to {room.capacity} Guests <span className="font-extralight ss:mx-2">|</span> Seaside view
