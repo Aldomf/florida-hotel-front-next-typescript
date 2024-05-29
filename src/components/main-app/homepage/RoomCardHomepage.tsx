@@ -93,7 +93,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
               <GiMeal className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
             </div>
             <Link href={`/room/${room.id}`}>
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center">
+              <h5 className="mb-2 text-2xl font-medium tracking-tight text-gray-900 text-center">
                 Room {room.roomNumber} - {RoomType[room.roomType]}
               </h5>
             </Link>
@@ -102,7 +102,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
             </p>
             <Link
               href={`/room/${room.id}`}
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#9D8000] rounded-lg hover:bg-[#C2B266]"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#D8C8BB] rounded-lg hover:bg-[#C4B4A7]"
             >
               Read more
               <svg
