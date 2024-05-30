@@ -34,7 +34,7 @@ const ManyRooms: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
   }
 
   return (
-    <div className="mt-[400px] ss:mt-[480px] lg:mt-[450px]">
+    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px]">
       {rooms?.map((room, roomIndex) => (
         <div
           key={room.id}
