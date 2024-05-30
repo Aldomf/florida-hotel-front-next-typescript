@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import MainNavbar from "@/components/main-app/MainNavBar";
 import ManyRooms from "@/components/main-app/rooms/ManyRooms";
 import { useGetRoomsQuery } from "@/redux/services/roomApi";
+import HeroRooms from "@/components/main-app/rooms/HeroRooms";
 
 function Rooms() {
   // Fetch all rooms using the useGetRoomsQuery hook
@@ -16,6 +17,7 @@ function Rooms() {
   return (
     <div>
       <MainNavbar />
+      <HeroRooms/>
       <h1 className="font-semibold text-3xl lg:text-5xl text-center my-8">Rooms</h1>
       <ManyRooms rooms={rooms || []}
         error={error}
