@@ -18,7 +18,6 @@ function Rooms() {
     <div>
       <MainNavbar />
       <HeroRooms/>
-      <h1 className="font-semibold text-3xl lg:text-5xl text-center my-8">Rooms</h1>
       <ManyRooms rooms={rooms || []}
         error={error}
         isLoading={isLoading}/>
