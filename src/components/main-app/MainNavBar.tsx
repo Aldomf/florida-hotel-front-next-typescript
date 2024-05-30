@@ -50,6 +50,7 @@ const Navbar: React.FC = () => {
               width={100}
               height={100}
               alt="Florida-hotel-logo"
+              priority
             />
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
