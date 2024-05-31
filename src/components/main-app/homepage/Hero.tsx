@@ -6,15 +6,17 @@ const Hero: React.FC = () => {
   const handleScroll = () => {
     const nextSection = document.getElementById("next-section");
     if (nextSection) {
-      // Scroll into view first
-      nextSection.scrollIntoView({ behavior: "smooth" });
-      
-      // Adjust the scroll position after a slight delay to allow scrollIntoView to complete
-      setTimeout(() => {
-        const offset = 280; // Adjust this value to the desired number of pixels to subtract
-        const currentScroll = window.scrollY || document.documentElement.scrollTop;
-        window.scrollTo({ top: currentScroll - offset, behavior: "smooth" });
-      }, 50); // Adjust the delay if necessary
+      // Calculate the offset based on the viewport height (vh)
+      const offset = window.innerHeight * 0.38; // 30% of the viewport height
+
+      // Get the position of the next section
+      const nextSectionPosition = nextSection.getBoundingClientRect().top + window.scrollY;
+
+      // Scroll to the adjusted position
+      window.scrollTo({
+        top: nextSectionPosition - offset,
+        behavior: "smooth",
+      });
     }
   };
 
