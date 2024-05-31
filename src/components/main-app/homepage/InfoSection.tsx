@@ -6,7 +6,7 @@ import Image from "next/image";
 
 function InfoSection() {
   return (
-    <div className="my-10 mx-4 mt-[580px] ss:mt-[650px] mb-14 lg:mb-28 md:mx-28 lg:flex lg:space-x-20">
+    <div className="my-10 mx-4 mt-[580px] ss:mt-[650px] mb-14 lg:mb-28 md:mx-28 lg:flex lg:space-x-20" id="next-section">
       <div className="text-center space-y-6 pb-8 lg:text-left lg:pr-36 lg:w-[60%]">
         <h2 className="text-4xl md:text-5xl font-medium font-AutumnFlowers">Florida Hotel</h2>
         <p className="lg:text-xl">
@@ -16,7 +16,7 @@ function InfoSection() {
         </p>
         <button
           //   onClick={() => router.push(`/room/${room.id}`)}
-          className="mt-2 font-semibold text-[#D8C8BB] border border-[#D8C8BB] px-4 py-2"
+          className="mt-2 font-semibold text-[#C4B4A7] border border-[#C4B4A7] px-4 py-2"
         >
           HOTEL DETAILS
         </button>
@@ -32,13 +32,13 @@ function InfoSection() {
           />
         </div>
         <div className="flex items-center">
-          <TfiEmail className="text-2xl mr-3" /> info.floridahotel@gmail.com
+          <TfiEmail className="text-2xl mr-3 text-[#C4B4A7]"/> info.floridahotel@gmail.com
         </div>
         <div className="flex items-center">
-          <FiSmartphone className="text-2xl mr-3" /> +5354873988
+          <FiSmartphone className="text-2xl mr-3 text-[#C4B4A7]" /> +5354873988
         </div>
         <div className="flex items-center">
-          <SlLocationPin className="text-2xl mr-3" /> Florida, Cuba
+          <SlLocationPin className="text-2xl mr-3 text-[#C4B4A7]" /> Florida, Cuba
         </div>
       </div>
     </div>
