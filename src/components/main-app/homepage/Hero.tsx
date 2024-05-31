@@ -10,7 +10,7 @@ const Hero: React.FC = () => {
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
   
       // Set different offsets for desktop and mobile
-      const offset = isMobile ? window.innerHeight * 0.1 : window.innerHeight * 0.38;
+      const offset = isMobile ? window.innerHeight * 0.3 : window.innerHeight * 0.38;
   
       // Get the position of the next section
       const nextSectionPosition = nextSection.getBoundingClientRect().top + window.scrollY;
