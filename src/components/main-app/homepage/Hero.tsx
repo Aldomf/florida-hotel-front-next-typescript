@@ -6,19 +6,22 @@ const Hero: React.FC = () => {
   const handleScroll = () => {
     const nextSection = document.getElementById("next-section");
     if (nextSection) {
-      // Calculate the offset based on the viewport height (vh)
-      const offset = window.innerHeight * 0.38; // 30% of the viewport height
-
+      // Define the media query for mobile
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  
+      // Set different offsets for desktop and mobile
+      const offset = isMobile ? window.innerHeight * 0.1 : window.innerHeight * 0.38;
+  
       // Get the position of the next section
       const nextSectionPosition = nextSection.getBoundingClientRect().top + window.scrollY;
-
+  
       // Scroll to the adjusted position
       window.scrollTo({
         top: nextSectionPosition - offset,
         behavior: "smooth",
       });
     }
-  };
+  };  
 
   return (
     <div className="absolute top-0 left-0 w-full h-screen z-10">
