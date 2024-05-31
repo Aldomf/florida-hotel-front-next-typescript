@@ -16,7 +16,7 @@ function InfoSection() {
         </p>
         <button
           //   onClick={() => router.push(`/room/${room.id}`)}
-          className="mt-2 font-semibold text-[#C4B4A7] border border-[#C4B4A7] px-4 py-2"
+          className="mt-2 font-semibold text-[#C4B4A7] border border-[#C4B4A7] px-4 py-2 hover:bg-[#C4B4A7] hover:text-white"
         >
           HOTEL DETAILS
         </button>

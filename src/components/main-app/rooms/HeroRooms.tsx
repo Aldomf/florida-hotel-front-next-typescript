@@ -1,8 +1,6 @@
 import Image from "next/image";
 import React from "react";
 
-const videoSrc = "/video-2.mp4";
-
 const HeroRooms: React.FC = () => {
   return (
     <div className="absolute top-0 left-0 w-full h-[calc(100vh-200px)] z-10">
