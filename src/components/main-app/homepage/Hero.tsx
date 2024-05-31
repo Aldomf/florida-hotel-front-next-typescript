@@ -14,7 +14,7 @@ const Hero: React.FC = () => {
         const offset = 280; // Adjust this value to the desired number of pixels to subtract
         const currentScroll = window.scrollY || document.documentElement.scrollTop;
         window.scrollTo({ top: currentScroll - offset, behavior: "smooth" });
-      }, 500); // Adjust the delay if necessary
+      }, 50); // Adjust the delay if necessary
     }
   };
 
