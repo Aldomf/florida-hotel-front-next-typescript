@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { useGetRoomByIdQuery } from "@/redux/services/roomApi";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
@@ -10,23 +8,17 @@ import { BiHandicap } from "react-icons/bi";
 import { CgScreen } from "react-icons/cg";
 import { RiSafeLine } from "react-icons/ri";
 import { GiMeal } from "react-icons/gi";
+import { GetRoomData, GetRoomDataById } from "@/interfaces/roomsInterface";
 
-function OneRoom() {
-  const params = useParams<{ id: string }>();
-  const roomId = params.id;
+interface RoomCardProps {
+  initialRoomData?: GetRoomDataById;
+  isFetching: boolean;
+  fetchError: any;
+}
 
-  const {
-    data: initialRoomData,
-    error: fetchError,
-    isLoading: isFetching,
-    refetch,
-  } = useGetRoomByIdQuery(roomId);
+const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchError }) => {
 
   const [mainImage, setMainImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   useEffect(() => {
     if (initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 0) {
@@ -66,13 +58,20 @@ function OneRoom() {
     },
   };
 
+  function capitalizeOnlyFirstLetter(str: string): string {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+
+  const roomNumber = capitalizeOnlyFirstLetter(
+    initialRoomData?.roomNumber ?? ""
+  );
+  const roomType = capitalizeOnlyFirstLetter(initialRoomData?.roomType ?? "");
+
   return (
-    <div>
-      <div>
-        <h1 className="mb-6 mt-6 text-4xl border-b border-[#9D8000] text-[#9D8000] text-center pb-6">
-          {initialRoomData?.roomNumber} {initialRoomData?.roomType}
-        </h1>
-      </div>
+    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px]">
       <div className="lg:mx-40 xl:flex xl:mx-32">
         <div className="my-6 mx-3 xl:w-[60%]">
           <div className="main-image mb-5">
@@ -115,57 +114,57 @@ function OneRoom() {
           )}
         </div>
         <div className="xl:w-[40%]">
-          <div className="mx-8 md:mx-16 mt-16 text-center md:text-left text-[#9D8000]">
-            <p className="mb-4 text-2xl border-b border-[#9D8000] pb-2">
-              {initialRoomData?.roomNumber} {initialRoomData?.roomType}
+          <div className="mx-8 md:mx-16 mt-16 text-center md:text-left">
+            <p className="mb-4 text-4xl md:text-5xl border-b border-[#C4B4A7] pb-2 font-AutumnFlowers">
+            {roomNumber} - {roomType}
             </p>
             <p className="mb-2">{initialRoomData?.description}</p>
           </div>
-          <div className="flex flex-col mx-8 md:mx-16 mt-8 text-[#9D8000] text-lg">
+          <div className="flex flex-col mx-8 md:mx-16 mt-8 text-lg">
             <p className="mb-2">
-              <span className="text-xl font-bold">Price Per Night:</span> $
+              <span className="text-xl font-medium">Price Per Night:</span> $
               {initialRoomData?.pricePerNight}
             </p>
             <p className="mb-2">
-              <span className="text-xl font-bold">Capacity:</span>{" "}
+              <span className="text-xl font-medium">Capacity:</span>{" "}
               {initialRoomData?.capacity} persons
             </p>
             <p className="mb-2">
-              <span className="text-xl font-bold">Room Size:</span>{" "}
+              <span className="text-xl font-medium">Room Size:</span>{" "}
               {initialRoomData?.roomSize} sqm
             </p>
             <p className="mb-2">
               {" "}
-              <span className="text-xl font-bold">Availability:</span>{" "}
-              <span className="bg-[#9D8000] text-white px-2 rounded-xl">
+              <span className="text-xl font-medium">Availability:</span>{" "}
+              <span className="bg-[#C4B4A7] text-white px-2 rounded-xl">
                 {initialRoomData?.availabilityStatus}
               </span>
             </p>
           </div>
-          <div className="flex flex-col mx-8 md:mx-16 mt-8 text-[#9D8000]">
-            <div className="flex items-center mb-2 border-b border-[#9D8000] pb-2">
-              <FaWifi className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6" />{" "}
+          <div className="flex flex-col mx-8 md:mx-16 mt-8 text-black lg:text-lg">
+            <div className="flex items-center mb-2 border-b border-[#C4B4A7] pb-2">
+              <FaWifi className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6 text-[#C4B4A7]" />{" "}
               WiFi
             </div>
-            <div className="flex items-center mb-2 border-b border-[#9D8000] pb-2">
-              <BiHandicap className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6" />{" "}
+            <div className="flex items-center mb-2 border-b border-[#C4B4A7] pb-2">
+              <BiHandicap className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6 text-[#C4B4A7]" />{" "}
               Inclusive
             </div>
-            <div className="flex items-center mb-2 border-b border-[#9D8000] pb-2">
-              <CgScreen className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6" />
+            <div className="flex items-center mb-2 border-b border-[#C4B4A7] pb-2">
+              <CgScreen className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6 text-[#C4B4A7]" />
               TV
             </div>
-            <div className="flex items-center mb-2 border-b border-[#9D8000] pb-2">
-              <RiSafeLine className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6" />{" "}
+            <div className="flex items-center mb-2 border-b border-[#C4B4A7] pb-2">
+              <RiSafeLine className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6 text-[#C4B4A7]" />{" "}
               Safe Box
             </div>
-            <div className="flex items-center mb-2 border-b border-[#9D8000] pb-2">
-              <GiMeal className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6" />{" "}
+            <div className="flex items-center mb-2 border-b border-[#C4B4A7] pb-2">
+              <GiMeal className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-6 text-[#C4B4A7]" />{" "}
               Room Service
             </div>
           </div>
-          <div className="flex justify-center mx-8 md:mx-16 mt-2 text-[#9D8000]">
-            <button className="bg-[#9D8000] hover:bg-[#C2B266] text-white px-2 py-2 mb-4">
+          <div className="flex justify-center mx-8 md:mx-16 mt-2 text-[#C4B4A7]">
+            <button className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-2 py-2 mb-4">
               Book Now
             </button>
           </div>
