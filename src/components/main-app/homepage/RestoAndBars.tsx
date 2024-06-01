@@ -4,7 +4,7 @@ import React from "react";
 
 const RestoAndBars: React.FC = () => {
   return (
-    <div className="w-full h-[calc(100vh-172px)]">
+    <div className="w-full h-[calc(100vh-172px)] mb-28">
       <div className="h-full overflow-hidden relative">
         <Image
           src="/rest-1.jpg"

@@ -1,25 +1,26 @@
-'use client'
-import React from 'react'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { decrement, increment } from '@/redux/features/room/roomSlice'
-import MainNavbar from '@/components/main-app/MainNavBar'
-import Hero from '@/components/main-app/homepage/Hero'
-import RoomSection from '@/components/main-app/homepage/RoomSection'
-import InfoSection from '@/components/main-app/homepage/InfoSection'
-import RestoAndBars from '@/components/main-app/homepage/RestoAndBars'
+"use client";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { decrement, increment } from "@/redux/features/room/roomSlice";
+import MainNavbar from "@/components/main-app/MainNavBar";
+import Hero from "@/components/main-app/homepage/Hero";
+import RoomSection from "@/components/main-app/homepage/RoomSection";
+import InfoSection from "@/components/main-app/homepage/InfoSection";
+import RestoAndBars from "@/components/main-app/homepage/RestoAndBars";
+import Spa from "@/components/main-app/homepage/Spa";
 
 export default function Counter() {
-  const count = useAppSelector(state => state.counterReducer.value)
-  const dispatch = useAppDispatch()
-
+  const count = useAppSelector((state) => state.counterReducer.value);
+  const dispatch = useAppDispatch();
 
   return (
     <div>
-      <MainNavbar/>
-      <Hero/>
-      <InfoSection/>
-      <RoomSection/>
-      <RestoAndBars/>
+      <MainNavbar />
+      <Hero />
+      <InfoSection />
+      <RoomSection />
+      <RestoAndBars />
+      <Spa />
       {/* <div className='h-[1000px]'>
         <button
           aria-label="Increment value"
@@ -45,5 +46,5 @@ export default function Counter() {
         ))}
       </div> */}
     </div>
-  )
+  );
 }
