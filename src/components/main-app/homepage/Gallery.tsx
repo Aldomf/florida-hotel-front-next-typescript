@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -36,27 +37,54 @@ const images = [
   "/gal-11.jpg",
 ];
 
-function Gallery() {
+interface ArrowProps {
+  onClick?: () => void;
+}
+
+const CustomLeftArrow: React.FC<ArrowProps> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="absolute top-1/2 transform -translate-y-1/2 left-4 text-white rounded-full p-2 z-10"
+  >
+    <SlArrowLeft className="w-10 h-10 md:w-16 md:h-16"/>
+  </button>
+);
+
+const CustomRightArrow: React.FC<ArrowProps> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="absolute top-1/2 transform -translate-y-1/2 right-4 text-white rounded-full p-2 z-10"
+  >
+    <SlArrowRight className="w-10 h-10 md:w-16 md:h-16"/>
+  </button>
+);
+
+const Gallery: React.FC = () => {
   return (
     <div className="my-24">
       <h1 className="text-5xl md:text-6xl lg:text-[50px] mb-10 text-center font-AutumnFlowers">
         Gallery
       </h1>
-      <Carousel responsive={responsive} swipeable={true}>
+      <Carousel
+        responsive={responsive}
+        swipeable={true}
+        customLeftArrow={<CustomLeftArrow />}
+        customRightArrow={<CustomRightArrow />}
+      >
         {images.map((src, index) => (
           <div key={index} className="w-[500px] h-[300px]">
             <Image
               src={src}
               alt={`Slide ${index}`}
               className="object-cover w-full h-full"
-              width={5000}
-              height={5000}
+              width={500}
+              height={300}
             />
           </div>
         ))}
       </Carousel>
     </div>
   );
-}
+};
 
 export default Gallery;
