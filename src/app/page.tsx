@@ -8,6 +8,7 @@ import RoomSection from "@/components/main-app/homepage/RoomSection";
 import InfoSection from "@/components/main-app/homepage/InfoSection";
 import RestoAndBars from "@/components/main-app/homepage/RestoAndBars";
 import Spa from "@/components/main-app/homepage/Spa";
+import Gallery from "@/components/main-app/homepage/Gallery";
 
 export default function Counter() {
   const count = useAppSelector((state) => state.counterReducer.value);
@@ -21,6 +22,7 @@ export default function Counter() {
       <RoomSection />
       <RestoAndBars />
       <Spa />
+      <Gallery/>
       {/* <div className='h-[1000px]'>
         <button
           aria-label="Increment value"

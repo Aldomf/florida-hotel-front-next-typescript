@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
                     isScrolled ? "text-white" : "text-white"
                   } hover:text-black transition-all duration-500 ease-in-out`}
                 >
-                  Company
+                  Restaurants
                 </Link>
               </li>
               <li>
@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
                     isScrolled ? "text-white" : "text-white"
                   } hover:text-black transition-all duration-500 ease-in-out`}
                 >
-                  Team
+                  Spa
                 </Link>
               </li>
               <li>
