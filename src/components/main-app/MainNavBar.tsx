@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/restos"
                   className={`${
                     isScrolled ? "text-white" : "text-white"
                   } hover:text-black transition-all duration-500 ease-in-out`}

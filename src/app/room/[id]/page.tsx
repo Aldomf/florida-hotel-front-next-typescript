@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
-import MainNavbar from '@/components/main-app/MainNavBar'
+import MainNavbar from "@/components/main-app/MainNavBar";
 import OneRoom from "@/components/main-app/room/OneRoom";
 import HeroOneRoom from "@/components/main-app/room/HeroOneRooms";
 import { useParams } from "next/navigation";
 import { useGetRoomByIdQuery } from "@/redux/services/roomApi";
+import Footer from "@/components/main-app/Footer";
 
 function Room() {
   const params = useParams<{ id: string }>();
@@ -24,14 +25,17 @@ function Room() {
   return (
     <div>
       <MainNavbar />
-      <HeroOneRoom initialRoomData={initialRoomData}
-        isFetching={isFetching}
-        fetchError={fetchError}/>
-      <OneRoom 
+      <HeroOneRoom
         initialRoomData={initialRoomData}
         isFetching={isFetching}
         fetchError={fetchError}
       />
+      <OneRoom
+        initialRoomData={initialRoomData}
+        isFetching={isFetching}
+        fetchError={fetchError}
+      />
+      <Footer />
     </div>
   );
 }

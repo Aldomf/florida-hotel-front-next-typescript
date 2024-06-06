@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import MainNavbar from "@/components/main-app/MainNavBar";
 import ManyRooms from "@/components/main-app/rooms/ManyRooms";
 import { useGetRoomsQuery } from "@/redux/services/roomApi";
 import HeroRooms from "@/components/main-app/rooms/HeroRooms";
+import Footer from "@/components/main-app/Footer";
 
 function Rooms() {
   // Fetch all rooms using the useGetRoomsQuery hook
@@ -17,10 +18,9 @@ function Rooms() {
   return (
     <div>
       <MainNavbar />
-      <HeroRooms/>
-      <ManyRooms rooms={rooms || []}
-        error={error}
-        isLoading={isLoading}/>
+      <HeroRooms />
+      <ManyRooms rooms={rooms || []} error={error} isLoading={isLoading} />
+      <Footer />
     </div>
   );
 }
