@@ -46,7 +46,7 @@ const CustomLeftArrow: React.FC<ArrowProps> = ({ onClick }) => (
     onClick={onClick}
     className="absolute top-1/2 transform -translate-y-1/2 left-4 text-white rounded-full p-2 z-10"
   >
-    <SlArrowLeft className="w-10 h-10 md:w-16 md:h-16"/>
+    <SlArrowLeft className="w-10 h-10 md:w-16 md:h-16" />
   </button>
 );
 
@@ -55,13 +55,17 @@ const CustomRightArrow: React.FC<ArrowProps> = ({ onClick }) => (
     onClick={onClick}
     className="absolute top-1/2 transform -translate-y-1/2 right-4 text-white rounded-full p-2 z-10"
   >
-    <SlArrowRight className="w-10 h-10 md:w-16 md:h-16"/>
+    <SlArrowRight className="w-10 h-10 md:w-16 md:h-16" />
   </button>
 );
 
-const Gallery: React.FC = () => {
+interface GalleryProps {
+  id?: string;
+}
+
+const Gallery: React.FC<GalleryProps> = ({ id }) => {
   return (
-    <div className="my-24">
+    <div className="my-24" id={id}>
       <h1 className="text-5xl md:text-6xl lg:text-[50px] mb-10 text-center font-AutumnFlowers">
         Gallery
       </h1>

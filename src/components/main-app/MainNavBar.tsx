@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -57,7 +57,9 @@ const Navbar: React.FC = () => {
             <Link
               href="#"
               className={`text-sm mm:text-base text-white font-medium p-2 md:px-6 border border-[#C4B4A7] ${
-                isScrolled ? "bg-[#C4B4A7] hover:bg-[#D8C8BB]" : "bg-transparent hover:bg-[#C4B4A7]"
+                isScrolled
+                  ? "bg-[#C4B4A7] hover:bg-[#D8C8BB]"
+                  : "bg-transparent hover:bg-[#C4B4A7]"
               }`}
             >
               BOOK NOW
@@ -92,7 +94,7 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/spa"
                   className={`${
                     isScrolled ? "text-white" : "text-white"
                   } hover:text-black transition-all duration-500 ease-in-out`}
@@ -102,7 +104,7 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/#gallery-section"
                   className={`${
                     isScrolled ? "text-white" : "text-white"
                   } hover:text-black transition-all duration-500 ease-in-out`}

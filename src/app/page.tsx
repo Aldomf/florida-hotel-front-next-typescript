@@ -23,7 +23,7 @@ export default function Counter() {
       <RoomSection />
       <RestoAndBars />
       <Spa />
-      <Gallery/>
+      <Gallery id="gallery-section"/>
       <Footer/>
       {/* <div className='h-[1000px]'>
         <button
