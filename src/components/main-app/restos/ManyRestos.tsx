@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ManyRestos: React.FC = () => {
@@ -44,9 +45,14 @@ const ManyRestos: React.FC = () => {
               <p>Smart Casual</p>
             </div>
           </div>
-          <button className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white">
-            MORE DETAILS
-          </button>
+          <div className="mt-6">
+            <Link
+              href="/restos/golden-fork"
+              className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
+            >
+              MORE DETAILS
+            </Link>
+          </div>
         </div>
       </div>
       <div className="flex flex-col mx-4 md:mx-32 lg:mx-12 xl:mx-52 mb-20 lg:flex-row lg:space-x-2">
@@ -84,9 +90,14 @@ const ManyRestos: React.FC = () => {
               <p>Smart Casual</p>
             </div>
           </div>
-          <button className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white">
-            MORE DETAILS
-          </button>
+          <div className="mt-6">
+            <Link
+              href="/restos/savory-haven"
+              className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
+            >
+              MORE DETAILS
+            </Link>
+          </div>
         </div>
       </div>
       <div className="flex flex-col mx-4 md:mx-32 lg:mx-12 xl:mx-52 mb-20 lg:flex-row lg:space-x-2">
@@ -124,9 +135,14 @@ const ManyRestos: React.FC = () => {
               <p>Casual</p>
             </div>
           </div>
-          <button className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white">
-            MORE DETAILS
-          </button>
+          <div className="mt-6">
+            <Link
+              href="/restos/bistro"
+              className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
+            >
+              MORE DETAILS
+            </Link>
+          </div>
         </div>
       </div>
     </div>
