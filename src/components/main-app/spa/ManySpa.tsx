@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ManySpa: React.FC = () => {
@@ -34,9 +35,12 @@ const ManySpa: React.FC = () => {
             care, ensuring an unforgettable spa experience that leaves you
             feeling refreshed and renewed.
           </div>
-          <button className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white">
+          <Link
+            href="/spa/bliss-spa"
+            className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
+          >
             MORE DETAILS
-          </button>
+          </Link>
         </div>
       </div>
       <div className="flex flex-col mx-4 md:mx-32 lg:mx-12 xl:mx-52 mb-20 lg:flex-row lg:space-x-2">
