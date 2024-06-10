@@ -29,7 +29,7 @@ function Footer() {
               <ul className="font-medium">
                 <li className="mb-4">
                   <Link
-                    href="https://flowbite.com/"
+                    href="/restos"
                     className="hover:underline"
                   >
                     Restaurants & Bars
@@ -37,7 +37,7 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="https://tailwindcss.com/"
+                    href="/spa"
                     className="hover:underline"
                   >
                     Spa

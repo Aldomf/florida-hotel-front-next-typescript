@@ -98,7 +98,7 @@ const ManySpa: React.FC = () => {
             Hotel.
           </div>
           <Link
-            href="/spa/bliss-spa"
+            href="/gym"
             className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
           >
             MORE DETAILS
