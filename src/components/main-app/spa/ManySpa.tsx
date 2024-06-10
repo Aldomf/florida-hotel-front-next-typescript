@@ -68,9 +68,12 @@ const ManySpa: React.FC = () => {
             Experience the perfect blend of luxury and comfort as you unwind and
             rejuvenate in our serene, nature-inspired setting.
           </div>
-          <button className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white">
+          <Link
+            href="/spa/spring-spa"
+            className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
+          >
             MORE DETAILS
-          </button>
+          </Link>
         </div>
       </div>
       <div className="flex flex-col mx-4 md:mx-32 lg:mx-12 xl:mx-52 mb-20 lg:flex-row lg:space-x-2">
@@ -94,9 +97,12 @@ const ManySpa: React.FC = () => {
             you need for your wellness journey during your vacation in Florida
             Hotel.
           </div>
-          <button className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white">
+          <Link
+            href="/spa/bliss-spa"
+            className="mt-2 font-medium text-lg border border-[#C4B4A7] px-6 py-2 hover:bg-[#C4B4A7] hover:text-white"
+          >
             MORE DETAILS
-          </button>
+          </Link>
         </div>
       </div>
     </div>
