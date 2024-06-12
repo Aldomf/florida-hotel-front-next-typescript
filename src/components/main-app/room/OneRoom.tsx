@@ -18,10 +18,19 @@ interface RoomCardProps {
   fetchError: any;
 }
 
-const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchError }) => {
+const OneRoom: React.FC<RoomCardProps> = ({
+  initialRoomData,
+  isFetching,
+  fetchError,
+}) => {
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState<boolean>(false);
-  const [bookingDetails, setBookingDetails] = useState<{ name: string; email: string; startDate: Date | null; endDate: Date | null }>({
+  const [bookingDetails, setBookingDetails] = useState<{
+    name: string;
+    email: string;
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
     name: "",
     email: "",
     startDate: null,
@@ -109,14 +118,19 @@ const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchEr
 
   const handleBookingSubmit = () => {
     // Basic validation
-    if (!bookingDetails.name || !bookingDetails.email || !bookingDetails.startDate || !bookingDetails.endDate) {
+    if (
+      !bookingDetails.name ||
+      !bookingDetails.email ||
+      !bookingDetails.startDate ||
+      !bookingDetails.endDate
+    ) {
       alert("Please fill out all fields and select dates.");
       return;
     }
 
     // Implement the booking submission logic here, e.g., sending the details to the server.
     console.log("Booking Details:", bookingDetails);
-    
+
     // Dummy implementation of the booking submission
     submitBooking(bookingDetails);
     setIsBooking(false);
@@ -133,10 +147,10 @@ const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchEr
 
   const submitBooking = async (bookingDetails: any) => {
     try {
-      const response = await fetch('/api/book-room', {
-        method: 'POST',
+      const response = await fetch("/api/book-room", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(bookingDetails),
       });
@@ -171,33 +185,34 @@ const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchEr
               />
             )}
           </div>
-          {initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 1 && (
-            <Carousel
-              responsive={responsive}
-              autoPlay={true}
-              autoPlaySpeed={3000}
-              infinite={true}
-              arrows={false}
-              showDots={true}
-              itemClass="pr-1"
-            >
-              {initialRoomData.imageUrls.map((url, index) => (
-                <div
-                  key={index}
-                  className="carousel-image"
-                  onClick={() => setMainImage(url)}
-                >
-                  <Image
-                    src={url}
-                    alt={`Room Image ${index + 1}`}
-                    width={500}
-                    height={500}
-                    className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
-                  />
-                </div>
-              ))}
-            </Carousel>
-          )}
+          {initialRoomData?.imageUrls &&
+            initialRoomData.imageUrls.length > 1 && (
+              <Carousel
+                responsive={responsive}
+                autoPlay={true}
+                autoPlaySpeed={3000}
+                infinite={true}
+                arrows={false}
+                showDots={true}
+                itemClass="pr-1"
+              >
+                {initialRoomData.imageUrls.map((url, index) => (
+                  <div
+                    key={index}
+                    className="carousel-image"
+                    onClick={() => setMainImage(url)}
+                  >
+                    <Image
+                      src={url}
+                      alt={`Room Image ${index + 1}`}
+                      width={500}
+                      height={500}
+                      className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            )}
         </div>
         <div className="xl:w-[40%]">
           <div className="mx-8 md:mx-16 mt-16 text-center md:text-left">
@@ -250,7 +265,10 @@ const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchEr
             </div>
           </div>
           <div className="flex justify-center mx-8 md:mx-16 mt-2 text-[#C4B4A7]">
-            <button className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-2 py-2 mb-4" onClick={handleBookNowClick}>
+            <button
+              className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-2 py-2 mb-4"
+              onClick={handleBookNowClick}
+            >
               Book Now
             </button>
           </div>
@@ -285,17 +303,19 @@ const OneRoom: React.FC<RoomCardProps> = ({ initialRoomData, isFetching, fetchEr
               inline
               className="mb-2 p-2 border border-gray-300 rounded-lg w-full"
             />
-            <button
-              onClick={handleBookingSubmit}
-              className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-4 py-2 rounded-lg"
-            >
-              Confirm Booking
-            </button>
+            <div>
+              <button
+                onClick={handleBookingSubmit}
+                className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-4 py-2 rounded-lg"
+              >
+                Confirm Booking
+              </button>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
-}
+};
 
 export default OneRoom;
