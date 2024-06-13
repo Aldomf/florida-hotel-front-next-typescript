@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
+"use client"
+import React, { useRef, useState, useEffect } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
@@ -8,8 +8,9 @@ import { BiHandicap } from "react-icons/bi";
 import { CgScreen } from "react-icons/cg";
 import { RiSafeLine } from "react-icons/ri";
 import { GiMeal } from "react-icons/gi";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { DateRangePicker } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import { BookingData, GetRoomDataById } from "@/interfaces/roomsInterface";
 import { useCreateBookingMutation } from "@/redux/services/bookingApi";
 
@@ -38,8 +39,17 @@ const OneRoom: React.FC<RoomCardProps> = ({
     endDate: new Date(),
   });
 
-  const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
 
+  const handleSelect = (ranges: any) => {
+    setSelectionRange(ranges.selection);
+  };
+
+  const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
   const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,9 +115,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
       .join(" ");
   }
 
-  const roomNumber = capitalizeOnlyFirstLetter(
-    initialRoomData?.roomNumber ?? ""
-  );
+  const roomNumber = capitalizeOnlyFirstLetter(initialRoomData?.roomNumber ?? "");
   const roomType = capitalizeOnlyFirstLetter(initialRoomData?.roomType ?? "");
 
   const handleBookNowClick = () => {
@@ -121,51 +129,28 @@ const OneRoom: React.FC<RoomCardProps> = ({
 
   const handleBookingSubmit = async () => {
     try {
-      // Log booking details
-      console.log("Booking details:", bookingDetails);
-  
-      // Extract necessary fields from bookingDetails
       const { name, email, startDate, endDate } = bookingDetails;
-  
-      // Create the bookingData object
       const bookingData: BookingData = {
         name,
         email,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
       };
-  
-      // Log the bookingData being sent
-      console.log("Booking data being sent:", bookingData);
-  
-      // Make the API call to create the booking
+
       const response = await createBooking(bookingData).unwrap();
       console.log("Booking successful:", response);
-  
-      // Reset booking details
+
       setBookingDetails({
         name: "",
         email: "",
-        startDate: new Date(), // Initialize with current date or your default
-        endDate: new Date(),   // Initialize with current date or your default
+        startDate: new Date(),
+        endDate: new Date(),
       });
-  
-      // Close the booking modal or handle success state
+
       setIsBooking(false);
     } catch (error) {
       console.error("Failed to book the room:", error);
-      // Handle error state
     }
-  };
-  
-
-  const handleDateChange = (dates: [Date | null, Date | null]) => {
-    const [start, end] = dates;
-    setBookingDetails((prevDetails) => ({
-      ...prevDetails,
-      startDate: start ?? new Date(),
-      endDate: end ?? new Date(),
-    }));
   };
 
   const handleCloseBookingModal = (e: React.MouseEvent) => {
@@ -189,34 +174,33 @@ const OneRoom: React.FC<RoomCardProps> = ({
               />
             )}
           </div>
-          {initialRoomData?.imageUrls &&
-            initialRoomData.imageUrls.length > 1 && (
-              <Carousel
-                responsive={responsive}
-                autoPlay={true}
-                autoPlaySpeed={3000}
-                infinite={true}
-                arrows={false}
-                showDots={true}
-                itemClass="pr-1"
-              >
-                {initialRoomData.imageUrls.map((url, index) => (
-                  <div
-                    key={index}
-                    className="carousel-image"
-                    onClick={() => setMainImage(url)}
-                  >
-                    <Image
-                      src={url}
-                      alt={`Room Image ${index + 1}`}
-                      width={500}
-                      height={500}
-                      className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
-                    />
-                  </div>
-                ))}
-              </Carousel>
-            )}
+          {initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 1 && (
+            <Carousel
+              responsive={responsive}
+              autoPlay={true}
+              autoPlaySpeed={3000}
+              infinite={true}
+              arrows={false}
+              showDots={true}
+              itemClass="pr-1"
+            >
+              {initialRoomData.imageUrls.map((url, index) => (
+                <div
+                  key={index}
+                  className="carousel-image"
+                  onClick={() => setMainImage(url)}
+                >
+                  <Image
+                    src={url}
+                    alt={`Room Image ${index + 1}`}
+                    width={500}
+                    height={500}
+                    className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
+                  />
+                </div>
+              ))}
+            </Carousel>
+          )}
         </div>
         <div className="xl:w-[40%]">
           <div className="mx-8 md:mx-16 mt-16 text-center md:text-left">
@@ -301,13 +285,10 @@ const OneRoom: React.FC<RoomCardProps> = ({
               onChange={handleBookingChange}
               className="mb-2 p-2 border border-gray-300 rounded-lg w-full"
             />
-            <DatePicker
-              selected={bookingDetails.startDate}
-              onChange={handleDateChange}
-              startDate={bookingDetails.startDate}
-              endDate={bookingDetails.endDate}
-              selectsRange
-              inline
+            <DateRangePicker
+              ranges={[selectionRange]}
+              onChange={handleSelect}
+              minDate={new Date()}
               className="mb-2 p-2 border border-gray-300 rounded-lg w-full"
             />
             <div>
