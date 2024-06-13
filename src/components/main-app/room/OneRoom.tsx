@@ -10,7 +10,8 @@ import { RiSafeLine } from "react-icons/ri";
 import { GiMeal } from "react-icons/gi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { GetRoomData, GetRoomDataById } from "@/interfaces/roomsInterface";
+import { BookingData, GetRoomDataById } from "@/interfaces/roomsInterface";
+import { useCreateBookingMutation } from "@/redux/services/bookingApi";
 
 interface RoomCardProps {
   initialRoomData?: GetRoomDataById;
@@ -28,14 +29,16 @@ const OneRoom: React.FC<RoomCardProps> = ({
   const [bookingDetails, setBookingDetails] = useState<{
     name: string;
     email: string;
-    startDate: Date | null;
-    endDate: Date | null;
+    startDate: Date;
+    endDate: Date;
   }>({
     name: "",
     email: "",
-    startDate: null,
-    endDate: null,
+    startDate: new Date(),
+    endDate: new Date(),
   });
+
+  const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
 
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -116,57 +119,58 @@ const OneRoom: React.FC<RoomCardProps> = ({
     setBookingDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
   };
 
-  const handleBookingSubmit = () => {
-    // Basic validation
-    if (
-      !bookingDetails.name ||
-      !bookingDetails.email ||
-      !bookingDetails.startDate ||
-      !bookingDetails.endDate
-    ) {
-      alert("Please fill out all fields and select dates.");
-      return;
+  const handleBookingSubmit = async () => {
+    try {
+      // Log booking details
+      console.log("Booking details:", bookingDetails);
+  
+      // Extract necessary fields from bookingDetails
+      const { name, email, startDate, endDate } = bookingDetails;
+  
+      // Create the bookingData object
+      const bookingData: BookingData = {
+        name,
+        email,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      };
+  
+      // Log the bookingData being sent
+      console.log("Booking data being sent:", bookingData);
+  
+      // Make the API call to create the booking
+      const response = await createBooking(bookingData).unwrap();
+      console.log("Booking successful:", response);
+  
+      // Reset booking details
+      setBookingDetails({
+        name: "",
+        email: "",
+        startDate: new Date(), // Initialize with current date or your default
+        endDate: new Date(),   // Initialize with current date or your default
+      });
+  
+      // Close the booking modal or handle success state
+      setIsBooking(false);
+    } catch (error) {
+      console.error("Failed to book the room:", error);
+      // Handle error state
     }
-
-    // Implement the booking submission logic here, e.g., sending the details to the server.
-    console.log("Booking Details:", bookingDetails);
-
-    // Dummy implementation of the booking submission
-    submitBooking(bookingDetails);
-    setIsBooking(false);
   };
+  
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setBookingDetails((prevDetails) => ({
       ...prevDetails,
-      startDate: start,
-      endDate: end,
+      startDate: start ?? new Date(),
+      endDate: end ?? new Date(),
     }));
   };
 
-  const submitBooking = async (bookingDetails: any) => {
-    try {
-      const response = await fetch("/api/book-room", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingDetails),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      // Handle the response data (e.g., show success message, update UI, etc.)
-      alert("Booking successful!");
-      console.log("Booking Response:", data);
-    } catch (error) {
-      // Handle errors
-      console.error("Booking failed:", error);
-      alert("Booking failed. Please try again.");
+  const handleCloseBookingModal = (e: React.MouseEvent) => {
+    if ((e.target as Element).id === "booking-modal") {
+      setIsBooking(false);
     }
   };
 
@@ -235,7 +239,6 @@ const OneRoom: React.FC<RoomCardProps> = ({
               {initialRoomData?.roomSize} sqm
             </p>
             <p className="mb-2">
-              {" "}
               <span className="text-xl font-medium">Availability:</span>{" "}
               <span className="bg-[#C4B4A7] text-white px-2 rounded-xl">
                 {initialRoomData?.availabilityStatus}
@@ -275,7 +278,11 @@ const OneRoom: React.FC<RoomCardProps> = ({
         </div>
       </div>
       {isBooking && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
+          id="booking-modal"
+          onClick={handleCloseBookingModal}
+        >
           <div className="bg-white p-8 rounded-lg shadow-lg" ref={formRef}>
             <h2 className="text-2xl mb-4">Book Room</h2>
             <input

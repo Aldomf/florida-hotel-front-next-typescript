@@ -2,14 +2,16 @@ import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from './features/room/roomSlice'
 import { roomApi } from './services/roomApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
+import { bookingApi } from './services/bookingApi';
 
 export const store = configureStore({
   reducer: {
     counterReducer,
-    [roomApi.reducerPath]: roomApi.reducer
+    [roomApi.reducerPath]: roomApi.reducer,
+    [bookingApi.reducerPath]: bookingApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(roomApi.middleware),
+    getDefaultMiddleware().concat(roomApi.middleware).concat(bookingApi.middleware),
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

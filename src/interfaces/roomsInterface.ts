@@ -45,3 +45,10 @@ export interface RoomDataToUpdate {
   imageUrls: string[];
   images: FileList | null;
 }
+
+export interface BookingData {
+  name: string;
+  email: string;
+  startDate: string;
+  endDate: string;
+}
