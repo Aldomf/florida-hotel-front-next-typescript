@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useRef, useState, useEffect } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -47,9 +47,15 @@ const OneRoom: React.FC<RoomCardProps> = ({
 
   const handleSelect = (ranges: any) => {
     setSelectionRange(ranges.selection);
+    setBookingDetails((prevDetails) => ({
+      ...prevDetails,
+      startDate: ranges.selection.startDate,
+      endDate: ranges.selection.endDate,
+    }));
   };
 
-  const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
+  const [createBooking, { isLoading: isBookingLoading }] =
+    useCreateBookingMutation();
   const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -108,16 +114,6 @@ const OneRoom: React.FC<RoomCardProps> = ({
     },
   };
 
-  function capitalizeOnlyFirstLetter(str: string): string {
-    return str
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-  }
-
-  const roomNumber = capitalizeOnlyFirstLetter(initialRoomData?.roomNumber ?? "");
-  const roomType = capitalizeOnlyFirstLetter(initialRoomData?.roomType ?? "");
-
   const handleBookNowClick = () => {
     setIsBooking(true);
   };
@@ -159,6 +155,18 @@ const OneRoom: React.FC<RoomCardProps> = ({
     }
   };
 
+  function capitalizeOnlyFirstLetter(str: string): string {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+
+  const roomNumber = capitalizeOnlyFirstLetter(
+    initialRoomData?.roomNumber ?? ""
+  );
+  const roomType = capitalizeOnlyFirstLetter(initialRoomData?.roomType ?? "");
+
   return (
     <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px] mb-32">
       <div className="lg:mx-40 xl:flex xl:mx-32">
@@ -174,33 +182,34 @@ const OneRoom: React.FC<RoomCardProps> = ({
               />
             )}
           </div>
-          {initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 1 && (
-            <Carousel
-              responsive={responsive}
-              autoPlay={true}
-              autoPlaySpeed={3000}
-              infinite={true}
-              arrows={false}
-              showDots={true}
-              itemClass="pr-1"
-            >
-              {initialRoomData.imageUrls.map((url, index) => (
-                <div
-                  key={index}
-                  className="carousel-image"
-                  onClick={() => setMainImage(url)}
-                >
-                  <Image
-                    src={url}
-                    alt={`Room Image ${index + 1}`}
-                    width={500}
-                    height={500}
-                    className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
-                  />
-                </div>
-              ))}
-            </Carousel>
-          )}
+          {initialRoomData?.imageUrls &&
+            initialRoomData.imageUrls.length > 1 && (
+              <Carousel
+                responsive={responsive}
+                autoPlay={true}
+                autoPlaySpeed={3000}
+                infinite={true}
+                arrows={false}
+                showDots={true}
+                itemClass="pr-1"
+              >
+                {initialRoomData.imageUrls.map((url, index) => (
+                  <div
+                    key={index}
+                    className="carousel-image"
+                    onClick={() => setMainImage(url)}
+                  >
+                    <Image
+                      src={url}
+                      alt={`Room Image ${index + 1}`}
+                      width={500}
+                      height={500}
+                      className="w-36 ss:w-auto h-auto mx-auto cursor-pointer"
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            )}
         </div>
         <div className="xl:w-[40%]">
           <div className="mx-8 md:mx-16 mt-16 text-center md:text-left">
@@ -294,9 +303,11 @@ const OneRoom: React.FC<RoomCardProps> = ({
             <div>
               <button
                 onClick={handleBookingSubmit}
+                type="submit"
+                disabled={isBookingLoading}
                 className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-4 py-2 rounded-lg"
               >
-                Confirm Booking
+                {isBookingLoading ? "Booking..." : "Confirm Booking"}
               </button>
             </div>
           </div>

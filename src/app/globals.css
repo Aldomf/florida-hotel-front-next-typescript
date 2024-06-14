@@ -24,3 +24,14 @@
 .font-AutumnFlowers {
     font-family: 'AutumnFlowers', sans-serif;
   }
+
+ /* Hide the sidebar of the DateRangePicker on screens smaller than lg */
+@media (max-width: 600px) {
+  .rdrDefinedRangesWrapper {
+    @apply hidden;
+  }
+
+  .rdrCalendarWrapper {
+    @apply w-full;
+  }
+}
