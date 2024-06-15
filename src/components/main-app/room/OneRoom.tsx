@@ -27,6 +27,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
 }) => {
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState<boolean>(false);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [bookingDetails, setBookingDetails] = useState<{
     name: string;
     email: string;
@@ -52,6 +53,14 @@ const OneRoom: React.FC<RoomCardProps> = ({
       startDate: ranges.selection.startDate,
       endDate: ranges.selection.endDate,
     }));
+
+    // Calculate total price
+    const days = Math.ceil(
+      (ranges.selection.endDate - ranges.selection.startDate) /
+        (1000 * 60 * 60 * 24)
+    );
+    const pricePerNight = initialRoomData?.pricePerNight ?? 0;
+    setTotalPrice(days * pricePerNight);
   };
 
   const [createBooking, { isLoading: isBookingLoading }] =
@@ -300,12 +309,25 @@ const OneRoom: React.FC<RoomCardProps> = ({
               minDate={new Date()}
               className="mb-2 p-2 border border-gray-300 rounded-lg w-full"
             />
+            {totalPrice > 0 && (
+              <div className="mb-2 text-lg">
+                <p className="text-xl font-medium">
+                  Total Price for{" "}
+                  {Math.ceil(
+                    (selectionRange.endDate.getTime() -
+                      selectionRange.startDate.getTime()) /
+                      (1000 * 60 * 60 * 24)
+                  )}{" "}
+                  nights: ${totalPrice}
+                </p>
+              </div>
+            )}
             <div>
               <button
                 onClick={handleBookingSubmit}
                 type="submit"
                 disabled={isBookingLoading}
-                className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-4 py-2 rounded-lg"
+                className="bg-[#C4B4A7] hover:bg-[#D8C8BB] text-white px-4 py-2"
               >
                 {isBookingLoading ? "Booking..." : "Confirm Booking"}
               </button>
