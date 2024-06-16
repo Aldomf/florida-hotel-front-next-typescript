@@ -37,6 +37,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
     endDate: Date;
     price: number;
     nights: number;
+    roomId: number;
   }>({
     name: "",
     email: "",
@@ -44,6 +45,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
     endDate: new Date(),
     price: 0,
     nights: 0,
+    roomId: initialRoomData?.id ?? 0,
   });
 
   const [selectionRange, setSelectionRange] = useState({
@@ -70,6 +72,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
       endDate,
       price: totalPrice,
       nights: days,
+      roomId: initialRoomData?.id ?? 0,
     }));
   };
 
@@ -81,6 +84,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
     if (initialRoomData?.imageUrls && initialRoomData.imageUrls.length > 0) {
       setMainImage(initialRoomData.imageUrls[0]);
     }
+    console.log(initialRoomData?.id)
   }, [initialRoomData]);
 
   useEffect(() => {
@@ -144,7 +148,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
 
   const handleBookingSubmit = async () => {
     try {
-      const { name, email, startDate, endDate, price, nights } = bookingDetails;
+      const { name, email, startDate, endDate, price, nights, roomId } = bookingDetails;
       const bookingData: BookingData = {
         name,
         email,
@@ -152,6 +156,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
         endDate: endDate.toISOString(),
         price,
         nights,
+        roomId,
       };
 
       const response = await createBooking(bookingData).unwrap();
@@ -164,6 +169,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
         endDate: new Date(),
         price: 0,
         nights: 0,
+        roomId: initialRoomData?.id ?? 0,
       });
 
       setError("");

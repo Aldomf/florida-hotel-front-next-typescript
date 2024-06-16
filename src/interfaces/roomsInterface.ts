@@ -20,10 +20,11 @@ export interface GetRoomData {
   capacity: number;
   roomSize: number;
   availabilityStatus: AvailabilityStatus;
-  imageUrls: string[]
+  imageUrls: string[];
 }
 
 export interface GetRoomDataById {
+  id: number;
   roomNumber: string;
   roomType: RoomType;
   description?: string;
@@ -31,7 +32,7 @@ export interface GetRoomDataById {
   capacity: number;
   roomSize: number;
   availabilityStatus: AvailabilityStatus;
-  imageUrls: string[]
+  imageUrls: string[];
 }
 
 export interface RoomDataToUpdate {
@@ -53,4 +54,5 @@ export interface BookingData {
   endDate: string;
   price: number;
   nights: number;
+  roomId: number;
 }
