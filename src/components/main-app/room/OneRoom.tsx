@@ -168,6 +168,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
 
       setError("");
       setIsBooking(false);
+      setTotalPrice(0)
     } catch (error: any) {
       console.error("Failed to book the room:", error);
       // Assuming error is the response object from the server
@@ -311,7 +312,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl">Book Room</h2>
-              <div className="cursor-pointer text-red-600 border border-red-500" onClick={() => setIsBooking(false)}><RxCross1 /></div>
+              <div className="cursor-pointer text-red-600 border border-red-500 hover:text-white hover:bg-red-500" onClick={() => setIsBooking(false)}><RxCross1 /></div>
             </div>
             <div className="text-red-600">
               {Array.isArray(error) &&
