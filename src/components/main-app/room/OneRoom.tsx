@@ -11,12 +11,12 @@ import { GiMeal } from "react-icons/gi";
 import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { BookingData, GetRoomDataById } from "@/interfaces/roomsInterface";
+import { BookingData, GetRoomDataByIdTwo } from "@/interfaces/roomsInterface";
 import { useCreateBookingMutation } from "@/redux/services/bookingApi";
 import { RxCross1 } from "react-icons/rx";
 
 interface RoomCardProps {
-  initialRoomData?: GetRoomDataById;
+  initialRoomData?: GetRoomDataByIdTwo;
   isFetching: boolean;
   fetchError: any;
 }

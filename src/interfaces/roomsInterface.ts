@@ -24,6 +24,17 @@ export interface GetRoomData {
 }
 
 export interface GetRoomDataById {
+  roomNumber: string;
+  roomType: RoomType;
+  description?: string;
+  pricePerNight: number;
+  capacity: number;
+  roomSize: number;
+  availabilityStatus: AvailabilityStatus;
+  imageUrls: string[];
+}
+
+export interface GetRoomDataByIdTwo {
   id: number;
   roomNumber: string;
   roomType: RoomType;
