@@ -50,5 +50,7 @@ export interface BookingData {
   name: string;
   email: string;
   startDate: string;
-  endDate: string | null;
+  endDate: string;
+  price: number;
+  nights: number;
 }

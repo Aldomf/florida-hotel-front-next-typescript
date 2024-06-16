@@ -13,6 +13,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { BookingData, GetRoomDataById } from "@/interfaces/roomsInterface";
 import { useCreateBookingMutation } from "@/redux/services/bookingApi";
+import { RxCross1 } from "react-icons/rx";
 
 interface RoomCardProps {
   initialRoomData?: GetRoomDataById;
@@ -28,16 +29,21 @@ const OneRoom: React.FC<RoomCardProps> = ({
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [error, setError] = useState<string>("");
   const [bookingDetails, setBookingDetails] = useState<{
     name: string;
     email: string;
     startDate: Date;
     endDate: Date;
+    price: number;
+    nights: number;
   }>({
     name: "",
     email: "",
     startDate: new Date(),
     endDate: new Date(),
+    price: 0,
+    nights: 0,
   });
 
   const [selectionRange, setSelectionRange] = useState({
@@ -47,20 +53,24 @@ const OneRoom: React.FC<RoomCardProps> = ({
   });
 
   const handleSelect = (ranges: any) => {
+    const startDate = ranges.selection.startDate;
+    const endDate = ranges.selection.endDate;
     setSelectionRange(ranges.selection);
-    setBookingDetails((prevDetails) => ({
-      ...prevDetails,
-      startDate: ranges.selection.startDate,
-      endDate: ranges.selection.endDate,
-    }));
 
-    // Calculate total price
     const days = Math.ceil(
-      (ranges.selection.endDate - ranges.selection.startDate) /
-        (1000 * 60 * 60 * 24)
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     );
     const pricePerNight = initialRoomData?.pricePerNight ?? 0;
-    setTotalPrice(days * pricePerNight);
+    const totalPrice = days * pricePerNight;
+
+    setTotalPrice(totalPrice);
+    setBookingDetails((prevDetails) => ({
+      ...prevDetails,
+      startDate,
+      endDate,
+      price: totalPrice,
+      nights: days,
+    }));
   };
 
   const [createBooking, { isLoading: isBookingLoading }] =
@@ -134,12 +144,14 @@ const OneRoom: React.FC<RoomCardProps> = ({
 
   const handleBookingSubmit = async () => {
     try {
-      const { name, email, startDate, endDate } = bookingDetails;
+      const { name, email, startDate, endDate, price, nights } = bookingDetails;
       const bookingData: BookingData = {
         name,
         email,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
+        price,
+        nights,
       };
 
       const response = await createBooking(bookingData).unwrap();
@@ -150,11 +162,19 @@ const OneRoom: React.FC<RoomCardProps> = ({
         email: "",
         startDate: new Date(),
         endDate: new Date(),
+        price: 0,
+        nights: 0,
       });
 
+      setError("");
       setIsBooking(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to book the room:", error);
+      // Assuming error is the response object from the server
+      const errorMessages = error.data?.message || [
+        "An unexpected error occurred",
+      ];
+      setError(errorMessages);
     }
   };
 
@@ -285,8 +305,18 @@ const OneRoom: React.FC<RoomCardProps> = ({
           id="booking-modal"
           onClick={handleCloseBookingModal}
         >
-          <div className="bg-white p-8 rounded-lg shadow-lg" ref={formRef}>
-            <h2 className="text-2xl mb-4">Book Room</h2>
+          <div
+            className="bg-white py-4 px-2 lg:p-6 rounded-lg shadow-lg max-h-screen overflow-auto"
+            ref={formRef}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl">Book Room</h2>
+              <div className="cursor-pointer text-red-600 border border-red-500" onClick={() => setIsBooking(false)}><RxCross1 /></div>
+            </div>
+            <div className="text-red-600">
+              {Array.isArray(error) &&
+                error.map((errMsg, index) => <p key={index}>{errMsg}</p>)}
+            </div>
             <input
               type="text"
               name="name"
@@ -294,6 +324,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
               value={bookingDetails.name}
               onChange={handleBookingChange}
               className="mb-2 p-2 border border-gray-300 rounded-lg w-full"
+              required
             />
             <input
               type="email"
@@ -302,6 +333,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
               value={bookingDetails.email}
               onChange={handleBookingChange}
               className="mb-2 p-2 border border-gray-300 rounded-lg w-full"
+              required
             />
             <DateRangePicker
               ranges={[selectionRange]}
@@ -312,13 +344,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
             {totalPrice > 0 && (
               <div className="mb-2 text-lg">
                 <p className="text-xl font-medium">
-                  Total Price for{" "}
-                  {Math.ceil(
-                    (selectionRange.endDate.getTime() -
-                      selectionRange.startDate.getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )}{" "}
-                  nights: ${totalPrice}
+                  Total Price for {bookingDetails.nights} nights: ${totalPrice}
                 </p>
               </div>
             )}
