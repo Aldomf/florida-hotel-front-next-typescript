@@ -35,8 +35,20 @@ export interface GetRoomDataById {
   imageUrls: string[];
 }
 
-export interface RoomDataToUpdate {
+export interface RoomDataToCreate {
   id: number
+  roomNumber: string;
+  roomType: RoomType;
+  description?: string;
+  pricePerNight: number;
+  capacity: number;
+  roomSize: number;
+  availabilityStatus: AvailabilityStatus;
+  imageUrls: string[];
+  images: FileList | null;
+}
+
+export interface RoomDataToUpdate {
   roomNumber: string;
   roomType: RoomType;
   description?: string;

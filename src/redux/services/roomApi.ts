@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { GetRoomData, GetRoomDataById, RoomData, RoomDataToUpdate } from "@/interfaces/roomsInterface";
+import { GetRoomData, RoomData, RoomDataToCreate } from "@/interfaces/roomsInterface";
 
 export const roomApi = createApi({
   reducerPath: "roomApi",
@@ -18,7 +18,7 @@ export const roomApi = createApi({
         refetchOnMountOrArgChange: true,
       },
     }),
-    getRoomById: builder.query<RoomDataToUpdate, string>({
+    getRoomById: builder.query<RoomDataToCreate, string>({
       query: (id) => `rooms/${id}`,
       extraOptions: {
         refetchOnMountOrArgChange: true,
