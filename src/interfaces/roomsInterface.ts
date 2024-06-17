@@ -36,6 +36,7 @@ export interface GetRoomDataById {
 }
 
 export interface RoomDataToUpdate {
+  id: number
   roomNumber: string;
   roomType: RoomType;
   description?: string;
