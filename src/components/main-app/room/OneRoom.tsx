@@ -14,6 +14,7 @@ import "react-date-range/dist/theme/default.css";
 import { BookingData, GetRoomDataById} from "@/interfaces/roomsInterface";
 import { useCreateBookingMutation } from "@/redux/services/bookingApi";
 import { RxCross1 } from "react-icons/rx";
+import axios from "axios";
 
 interface RoomCardProps {
   initialRoomData?: GetRoomDataById;
@@ -161,6 +162,15 @@ const OneRoom: React.FC<RoomCardProps> = ({
 
       const response = await createBooking(bookingData).unwrap();
       console.log("Booking successful:", response);
+
+      console.log("Bookissssssssssss", response.id);
+
+      // After booking, create Stripe checkout session
+      const sessionResponse = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stripe/${response.id}/pay`);
+      const { url } = sessionResponse.data;
+
+      // Redirect user to the Stripe Checkout page
+      window.location.href = url;
 
       setBookingDetails({
         name: "",

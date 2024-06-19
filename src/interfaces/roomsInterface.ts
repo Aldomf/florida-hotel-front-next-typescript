@@ -61,6 +61,7 @@ export interface RoomDataToUpdate {
 }
 
 export interface BookingData {
+  id?: number;
   name: string;
   email: string;
   startDate: string;
