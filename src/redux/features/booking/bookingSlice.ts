@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BookingData } from "@/interfaces/roomsInterface";
+import { BookingDataSlice } from "@/interfaces/roomsInterface";
 
 interface BookingState {
-  bookingData: BookingData | null;
+  bookingData: BookingDataSlice | null;
 }
 
 const initialState: BookingState = {
@@ -13,7 +13,7 @@ const bookingSlice = createSlice({
   name: "booking",
   initialState,
   reducers: {
-    setBookingData: (state, action: PayloadAction<BookingData>) => {
+    setBookingData: (state, action: PayloadAction<BookingDataSlice>) => {
       state.bookingData = action.payload;
     },
     clearBookingData: (state) => {

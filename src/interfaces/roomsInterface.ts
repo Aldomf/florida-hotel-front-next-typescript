@@ -74,6 +74,17 @@ export interface Room {
 
 export interface BookingData {
   id?: number;
+  name: string;
+  email: string;
+  startDate: string;
+  endDate: string;
+  price: number;
+  nights: number;
+  roomId: number;
+}
+
+export interface BookingDataSlice {
+  id?: number;
   bookingNumber: string
   name: string;
   email: string;

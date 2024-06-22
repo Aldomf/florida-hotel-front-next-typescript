@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BookingData } from "@/interfaces/roomsInterface";
+import { BookingData, BookingDataSlice } from "@/interfaces/roomsInterface";
 
 export const bookingApi = createApi({
   reducerPath: "bookingApi",
   baseQuery: fetchBaseQuery({ baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/` }),
   endpoints: (builder) => ({
-    findBooking: builder.query<BookingData, string>({
+    findBooking: builder.query<BookingDataSlice, string>({
       query: (bookingNumber) => ({
         url: "booking/find",
         method: "POST",
