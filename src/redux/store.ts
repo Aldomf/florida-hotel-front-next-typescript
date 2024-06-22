@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from './features/room/roomSlice'
+import bookingReducer from './features/booking/bookingSlice'
 import { roomApi } from './services/roomApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { bookingApi } from './services/bookingApi';
 
 export const store = configureStore({
   reducer: {
+    bookingReducer,
     counterReducer,
     [roomApi.reducerPath]: roomApi.reducer,
     [bookingApi.reducerPath]: bookingApi.reducer,

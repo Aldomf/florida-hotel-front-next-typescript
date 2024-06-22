@@ -55,14 +55,14 @@ const Navbar: React.FC = () => {
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <Link
-              href="#"
+              href="/form-reservation"
               className={`text-sm mm:text-base text-white font-medium p-2 md:px-6 border border-[#C4B4A7] ${
                 isScrolled
                   ? "bg-[#C4B4A7] hover:bg-[#D8C8BB]"
                   : "bg-transparent hover:bg-[#C4B4A7]"
               }`}
             >
-              BOOK NOW
+              BOOKINGS
             </Link>
           </div>
         </div>

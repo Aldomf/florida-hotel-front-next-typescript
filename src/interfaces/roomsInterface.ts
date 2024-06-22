@@ -36,7 +36,7 @@ export interface GetRoomDataById {
 }
 
 export interface RoomDataToCreate {
-  id: number
+  id: number;
   roomNumber: string;
   roomType: RoomType;
   description?: string;
@@ -60,8 +60,21 @@ export interface RoomDataToUpdate {
   images: FileList | null;
 }
 
+export interface Room {
+  id: number;
+  roomNumber: string;
+  roomType: RoomType;
+  description?: string;
+  pricePerNight: number;
+  capacity: number;
+  roomSize: number;
+  availabilityStatus: AvailabilityStatus;
+  imageUrls: string[];
+}
+
 export interface BookingData {
   id?: number;
+  bookingNumber: string
   name: string;
   email: string;
   startDate: string;
@@ -69,4 +82,5 @@ export interface BookingData {
   price: number;
   nights: number;
   roomId: number;
+  room: Room;
 }
