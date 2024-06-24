@@ -1,16 +1,52 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import Image from "next/image";
 import { RxDimensions } from "react-icons/rx";
 import { SlPeople } from "react-icons/sl";
-import { setBookingData } from "@/redux/features/booking/bookingSlice"; // Import your action creator
+import { setBookingData } from "@/redux/features/booking/bookingSlice";
+import { useSearchParams } from "next/navigation";
 
 const MyReservations: React.FC = () => {
-  const dispatch = useDispatch(); // Initialize useDispatch hook
+  const searchParams = useSearchParams();
 
-  const bookingData = useSelector((state: RootState) => state.bookingReducer.bookingData);
+  const bookingId = searchParams.get("bookingId");
+
+  // const router = useRouter();
+  // const { id: bookingId } = router.query; // Destructure to get bookingId from query
+
+  console.log("bookingId:", bookingId); // Log bookingId to ensure it's being set correctly
+
+  const dispatch = useDispatch();
+  const bookingData = useSelector(
+    (state: RootState) => state.bookingReducer.bookingData
+  );
+
+  useEffect(() => {
+    console.log("useEffect triggered, bookingId:", bookingId);
+    if (bookingId) {
+      fetchBookingDetails(bookingId as string);
+    }
+  }, [bookingId]);
+
+  const fetchBookingDetails = async (bookingId: string) => {
+    console.log("Fetching booking details for ID:", bookingId); // Log the bookingId
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/booking/${bookingId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch booking details");
+      }
+      const data = await response.json();
+      console.log("Fetched data:", data); // Log the fetched data
+      dispatch(setBookingData(data));
+      localStorage.setItem("bookingData", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error fetching booking details:", error);
+    }
+  };
 
   useEffect(() => {
     // Save bookingData to localStorage when it changes
@@ -40,7 +76,6 @@ const MyReservations: React.FC = () => {
     room,
   } = bookingData;
 
-  // Function to format date string to readable format
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -108,13 +143,13 @@ const MyReservations: React.FC = () => {
             </div>
             <div className="flex justify-center py-4 space-x-20">
               <div className="flex flex-col items-center">
-                <SlPeople className="text-3xl"/>{" "}
+                <SlPeople className="text-3xl" />{" "}
                 <span className="text-sm md:text-base text-center mt-2">
                   Up to {room.capacity} Guests
                 </span>
               </div>
               <div className="flex flex-col items-center">
-                <RxDimensions className="text-3xl"/>{" "}
+                <RxDimensions className="text-3xl" />{" "}
                 <span className="text-sm md:text-base text-center mt-2">
                   {room.roomSize} m²
                 </span>
