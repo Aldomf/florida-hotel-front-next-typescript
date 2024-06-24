@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import MainNavbar from "@/components/main-app/MainNavBar";
 import Footer from "@/components/main-app/Footer";
 import MyReservations from "@/components/main-app/reservations/MyReservations";
@@ -9,7 +9,9 @@ function MyReservationsPage() {
     <div>
       <MainNavbar />
       <HeroMyReservations />
-      <MyReservations />
+      <Suspense fallback={<div>Loading...</div>}>
+        <MyReservations />
+      </Suspense>
       <Footer />
     </div>
   );
