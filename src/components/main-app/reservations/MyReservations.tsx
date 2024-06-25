@@ -8,6 +8,9 @@ import { SlPeople } from "react-icons/sl";
 import { setBookingData } from "@/redux/features/booking/bookingSlice";
 import { useSearchParams } from "next/navigation";
 import { BookingDataSlice } from "@/interfaces/roomsInterface";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { FaRegClock } from "react-icons/fa6";
+import axios from "axios";
 
 const MyReservations: React.FC = () => {
   const searchParams = useSearchParams();
@@ -44,10 +47,14 @@ const MyReservations: React.FC = () => {
   useEffect(() => {
     if (status === "success" && bookingData) {
       // Update payment status in bookingData
-      dispatch(setBookingData({ ...bookingData, paymentStatus: "paid" } as BookingDataSlice));
+      dispatch(
+        setBookingData({
+          ...bookingData,
+          paymentStatus: "paid",
+        } as BookingDataSlice)
+      );
     }
   }, [status]);
-  
 
   useEffect(() => {
     if (bookingData) {
@@ -75,6 +82,18 @@ const MyReservations: React.FC = () => {
     room,
     paymentStatus,
   } = bookingData;
+
+  const handlePayment = async () => {
+    try {
+      const sessionResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stripe/${bookingData.id}/pay`
+      );
+      const { url } = sessionResponse.data;
+      window.location.href = url;
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+    }
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -143,7 +162,26 @@ const MyReservations: React.FC = () => {
             </div>
             <div className="border-b border-gray-200 flex justify-between py-4">
               <p className="font-semibold">Payment Status</p>
-              <p>{paymentStatus === "paid" ? "Paid" : "Not Paid"}</p>
+              <p>
+                {paymentStatus === "paid" ? (
+                  <p className="flex items-center justify-center">
+                    <IoCheckmarkDoneCircle className="mr-2 text-green-600" />{" "}
+                    Paid
+                  </p>
+                ) : (
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="flex items-center justify-center">
+                      <FaRegClock className="mr-2 text-yellow-600" /> Pending
+                    </div>
+                    <button
+                      onClick={handlePayment}
+                      className="bg-green-600 hover:bg-green-800 text-white py-1 px-4 mt-2"
+                    >
+                      Pay
+                    </button>
+                  </div>
+                )}
+              </p>
             </div>
             <div className="flex justify-center py-4 space-x-20">
               <div className="flex flex-col items-center">
