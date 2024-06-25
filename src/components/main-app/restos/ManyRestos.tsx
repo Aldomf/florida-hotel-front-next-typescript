@@ -9,7 +9,7 @@ const ManyRestos: React.FC = () => {
   }
 
   return (
-    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px]">
+    <div className="mt-20">
       <div className="flex flex-col mx-4 md:mx-32 lg:mx-12 xl:mx-52 mb-20 lg:flex-row lg:space-x-2">
         <div className="relative w-full h-64 overflow-hidden lg:w-1/2 lg:h-96">
           <div className="relative w-full h-full">

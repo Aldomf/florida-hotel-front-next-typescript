@@ -7,7 +7,7 @@ const BistroComponet: React.FC = () => {
   }
 
   return (
-    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px]">
+    <div className="mt-20">
       <div className="flex flex-col lg:flex-row mx-2 mb-10 md:mx-32 lg:mx-20 lg:space-x-16 xl:mx-40">
         <div className="text-center text-3xl mb-6 lg:w-1/2">
           5-Diamond Culinary Experience in Florida Hotel

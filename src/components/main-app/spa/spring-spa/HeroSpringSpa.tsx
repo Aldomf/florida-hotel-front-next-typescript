@@ -3,7 +3,7 @@ import React from "react";
 
 const HeroSpringSpa: React.FC = () => {
   return (
-    <div className="absolute top-0 left-0 w-full h-[calc(100vh-200px)] z-10">
+    <div className="w-full h-[calc(100vh-200px)] z-10">
       <div className="h-full overflow-hidden relative">
         <Image
           src="/spa-4.jpg"

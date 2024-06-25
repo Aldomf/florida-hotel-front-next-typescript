@@ -115,7 +115,7 @@ const MyReservations: React.FC = () => {
   const roomType = capitalizeOnlyFirstLetter(room.roomType ?? "");
 
   return (
-    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px]">
+    <div className="mt-20">
       <h1 className="text-3xl md:text-4xl mb-10 text-center">
         Booking Number: {bookingNumber}
       </h1>

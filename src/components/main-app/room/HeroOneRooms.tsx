@@ -43,7 +43,7 @@ const HeroOneRoom: React.FC<RoomCardProps> = ({
   const roomType = capitalizeOnlyFirstLetter(initialRoomData?.roomType ?? "");
 
   return (
-    <div className="absolute top-0 left-0 w-full h-[calc(100vh-200px)] z-10">
+    <div className="w-full h-[calc(100vh-200px)] z-10">
       <div className="h-full overflow-hidden relative">
         {initialRoomData?.imageUrls && (
           <Image

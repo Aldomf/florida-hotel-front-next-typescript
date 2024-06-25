@@ -214,7 +214,7 @@ const OneRoom: React.FC<RoomCardProps> = ({
   const roomType = capitalizeOnlyFirstLetter(initialRoomData?.roomType ?? "");
 
   return (
-    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px] mb-32">
+    <div className="mt-20 mb-32">
       <div className="lg:mx-40 xl:flex xl:mx-32">
         <div className="my-6 mx-3 xl:w-[60%]">
           <div className="main-image mb-5">

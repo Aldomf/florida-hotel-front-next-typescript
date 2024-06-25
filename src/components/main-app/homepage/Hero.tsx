@@ -10,7 +10,7 @@ const Hero: React.FC = () => {
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
   
       // Set different offsets for desktop and mobile
-      const offset = isMobile ? window.innerHeight * 0.27 : window.innerHeight * 0.38;
+      const offset = isMobile ? window.innerHeight * 0.38 : window.innerHeight * 0.35;
   
       // Get the position of the next section
       const nextSectionPosition = nextSection.getBoundingClientRect().top + window.scrollY;
@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
   };  
 
   return (
-    <div className="absolute top-0 left-0 w-full h-screen z-10">
+    <div className="w-full h-screen z-10">
       <div className="h-full overflow-hidden relative">
         <video
           src={videoSrc}

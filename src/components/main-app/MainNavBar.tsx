@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
 
   return (
     <div
-      className={`sticky top-0 z-20 transition-colors duration-100 ${
+      className={`fixed top-0 left-0 right-0 z-20 transition-colors duration-100 ${
         isScrolled ? "bg-white" : "bg-transparent"
       }`}
     >

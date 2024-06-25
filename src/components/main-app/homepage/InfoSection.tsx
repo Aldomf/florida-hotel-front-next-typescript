@@ -6,7 +6,7 @@ import Image from "next/image";
 
 function InfoSection() {
   return (
-    <div className="my-10 mx-4 mt-[580px] ss:mt-[650px] mb-14 lg:mb-28 md:mx-28 lg:flex lg:space-x-20" id="next-section">
+    <div className="my-10 mx-4 mt-20 mb-14 lg:mb-28 md:mx-28 lg:flex lg:space-x-20" id="next-section">
       <div className="text-center space-y-6 pb-8 lg:text-left lg:pr-36 lg:w-[60%]">
         <h2 className="text-4xl md:text-5xl font-medium font-AutumnFlowers">Florida Hotel</h2>
         <p className="lg:text-xl">

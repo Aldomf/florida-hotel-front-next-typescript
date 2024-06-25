@@ -44,7 +44,7 @@ interface ArrowProps {
 const CustomLeftArrow: React.FC<ArrowProps> = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="absolute top-1/2 transform -translate-y-1/2 left-4 text-white rounded-full p-2 z-10"
+    className="absolute top-1/2 transform -translate-y-1/2 left-4 text-white rounded-full p-2 z-10 bg-black bg-opacity-80"
   >
     <SlArrowLeft className="w-10 h-10 md:w-16 md:h-16" />
   </button>
@@ -53,7 +53,7 @@ const CustomLeftArrow: React.FC<ArrowProps> = ({ onClick }) => (
 const CustomRightArrow: React.FC<ArrowProps> = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="absolute top-1/2 transform -translate-y-1/2 right-4 text-white rounded-full p-2 z-10"
+    className="absolute top-1/2 transform -translate-y-1/2 right-4 text-white rounded-full p-2 z-10 bg-black bg-opacity-80"
   >
     <SlArrowRight className="w-10 h-10 md:w-16 md:h-16" />
   </button>

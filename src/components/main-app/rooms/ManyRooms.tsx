@@ -38,7 +38,7 @@ const ManyRooms: React.FC<RoomCardProps> = ({ rooms, isLoading, error }) => {
   }
 
   return (
-    <div className="mt-[380px] ss:mt-[480px] lg:mt-[450px]">
+    <div className="mt-20">
       {rooms?.map((room, roomIndex) => {
         const roomNumber = capitalizeOnlyFirstLetter(room.roomNumber ?? "");
         const roomType = capitalizeOnlyFirstLetter(room.roomType ?? "");
