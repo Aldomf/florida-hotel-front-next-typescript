@@ -7,16 +7,12 @@ import { RxDimensions } from "react-icons/rx";
 import { SlPeople } from "react-icons/sl";
 import { setBookingData } from "@/redux/features/booking/bookingSlice";
 import { useSearchParams } from "next/navigation";
+import { BookingDataSlice } from "@/interfaces/roomsInterface";
 
 const MyReservations: React.FC = () => {
   const searchParams = useSearchParams();
-
   const bookingId = searchParams.get("bookingId");
-
-  // const router = useRouter();
-  // const { id: bookingId } = router.query; // Destructure to get bookingId from query
-
-  console.log("bookingId:", bookingId); // Log bookingId to ensure it's being set correctly
+  const status = searchParams.get("status");
 
   const dispatch = useDispatch();
   const bookingData = useSelector(
@@ -24,14 +20,12 @@ const MyReservations: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log("useEffect triggered, bookingId:", bookingId);
     if (bookingId) {
       fetchBookingDetails(bookingId as string);
     }
   }, [bookingId]);
 
   const fetchBookingDetails = async (bookingId: string) => {
-    console.log("Fetching booking details for ID:", bookingId); // Log the bookingId
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/booking/${bookingId}`
@@ -40,7 +34,6 @@ const MyReservations: React.FC = () => {
         throw new Error("Failed to fetch booking details");
       }
       const data = await response.json();
-      console.log("Fetched data:", data); // Log the fetched data
       dispatch(setBookingData(data));
       localStorage.setItem("bookingData", JSON.stringify(data));
     } catch (error) {
@@ -49,17 +42,23 @@ const MyReservations: React.FC = () => {
   };
 
   useEffect(() => {
-    // Save bookingData to localStorage when it changes
+    if (status === "success" && bookingData) {
+      // Update payment status in bookingData
+      dispatch(setBookingData({ ...bookingData, paymentStatus: "paid" } as BookingDataSlice));
+    }
+  }, [status]);
+  
+
+  useEffect(() => {
     if (bookingData) {
       localStorage.setItem("bookingData", JSON.stringify(bookingData));
     }
   }, [bookingData]);
 
-  // Load bookingData from localStorage on component mount
   useEffect(() => {
     const storedBookingData = localStorage.getItem("bookingData");
     if (storedBookingData) {
-      dispatch(setBookingData(JSON.parse(storedBookingData))); // Dispatch action to set bookingData
+      dispatch(setBookingData(JSON.parse(storedBookingData)));
     }
   }, []);
 
@@ -74,6 +73,7 @@ const MyReservations: React.FC = () => {
     price,
     nights,
     room,
+    paymentStatus,
   } = bookingData;
 
   const formatDate = (dateString: string) => {
@@ -140,6 +140,10 @@ const MyReservations: React.FC = () => {
             <div className="border-b border-gray-200 flex justify-between py-4">
               <p className="font-semibold">Price</p>
               <p>${price}</p>
+            </div>
+            <div className="border-b border-gray-200 flex justify-between py-4">
+              <p className="font-semibold">Payment Status</p>
+              <p>{paymentStatus === "paid" ? "Paid" : "Not Paid"}</p>
             </div>
             <div className="flex justify-center py-4 space-x-20">
               <div className="flex flex-col items-center">

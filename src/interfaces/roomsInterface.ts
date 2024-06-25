@@ -92,6 +92,7 @@ export interface BookingDataSlice {
   endDate: string;
   price: number;
   nights: number;
+  paymentStatus: string
   roomId: number;
   room: Room;
 }
