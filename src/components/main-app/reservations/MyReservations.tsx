@@ -108,6 +108,9 @@ const MyReservations: React.FC = () => {
       if (confirmDelete) {
         try {
           await deleteBooking(bookingData.id.toString()).unwrap();
+
+          // Remove booking data from localStorage
+          localStorage.removeItem("bookingData");
           
           toast.success("Booking canceled successfully!", {
             duration: 3000,
