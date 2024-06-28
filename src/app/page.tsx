@@ -10,6 +10,7 @@ import RestoAndBars from "@/components/main-app/homepage/RestoAndBars";
 import Spa from "@/components/main-app/homepage/Spa";
 import Gallery from "@/components/main-app/homepage/Gallery";
 import Footer from "@/components/main-app/Footer";
+import { Toaster } from "react-hot-toast";
 
 export default function Counter() {
   const count = useAppSelector((state) => state.counterReducer.value);
@@ -25,6 +26,7 @@ export default function Counter() {
       <Spa />
       <Gallery id="gallery-section"/>
       <Footer/>
+      <Toaster />
       {/* <div className='h-[1000px]'>
         <button
           aria-label="Increment value"

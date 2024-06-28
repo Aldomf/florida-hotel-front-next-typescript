@@ -11,16 +11,23 @@ import { BookingDataSlice } from "@/interfaces/roomsInterface";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa6";
 import axios from "axios";
+import { useDeleteBookingMutation } from "@/redux/services/bookingApi";
+import { Toaster, toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const MyReservations: React.FC = () => {
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId");
   const status = searchParams.get("status");
 
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const bookingData = useSelector(
     (state: RootState) => state.bookingReducer.bookingData
   );
+
+  const [deleteBooking] = useDeleteBookingMutation();
 
   useEffect(() => {
     if (bookingId) {
@@ -92,6 +99,29 @@ const MyReservations: React.FC = () => {
       window.location.href = url;
     } catch (error) {
       console.error("Error initiating payment:", error);
+    }
+  };
+
+  const handleDeleteBooking = async () => {
+    if (bookingData?.id !== undefined) {
+      const confirmDelete = window.confirm("Are you sure you want to cancel this booking?");
+      if (confirmDelete) {
+        try {
+          await deleteBooking(bookingData.id.toString()).unwrap();
+          
+          toast.success("Booking canceled successfully!", {
+            duration: 3000,
+          });
+          router.push("/");
+          router.refresh();
+        } catch (error) {
+          console.error("Error deleting booking:", error);
+          alert('Failed to cancel booking.');
+        }
+      }
+    } else {
+      console.error("Booking ID is undefined");
+      alert('Booking ID is undefined, unable to cancel booking.');
     }
   };
 
@@ -197,9 +227,16 @@ const MyReservations: React.FC = () => {
                 </span>
               </div>
             </div>
+            <button 
+                onClick={handleDeleteBooking}
+                className="py-2 px-2 bg-red-600 hover:bg-red-800 text-xl text-white"
+              >
+                Cancel Reservation
+              </button>
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

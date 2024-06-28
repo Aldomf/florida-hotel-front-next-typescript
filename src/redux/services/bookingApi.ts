@@ -19,8 +19,15 @@ export const bookingApi = createApi({
         body: bookingData,
       }),
     }),
+    deleteBooking: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `booking/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in function components
-export const { useFindBookingQuery, useCreateBookingMutation } = bookingApi;
+export const { useFindBookingQuery, useCreateBookingMutation, useDeleteBookingMutation } = bookingApi;
+
