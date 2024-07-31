@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram } from "react-icons/fa6";
+import AdminLink from "../admin/AdminLink";
 
 function Footer() {
   return (
@@ -76,10 +77,13 @@ function Footer() {
                     Privacy Policy
                   </Link>
                 </li>
-                <li>
+                <li className="mb-4">
                   <Link href="#" className="hover:underline">
                     Terms &amp; Conditions
                   </Link>
+                </li>
+                <li>
+                  <AdminLink />
                 </li>
               </ul>
             </div>
